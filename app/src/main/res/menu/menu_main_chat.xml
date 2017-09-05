@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tupelo.wellness.MainActivity">
+    <item
+        android:id="@+id/action_here_now_chat"
+        android:orderInCategory="100"
+        android:title="@string/here_now"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_gcm_register"
+        android:orderInCategory="101"
+        android:title="@string/action_gcm_register"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_gcm_unregister"
+        android:orderInCategory="102"
+        android:title="@string/action_gcm_unregister"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:orderInCategory="103"
+        android:title="@string/action_sign_out"
+        app:showAsAction="ifRoom|withText" />
+
+</menu>

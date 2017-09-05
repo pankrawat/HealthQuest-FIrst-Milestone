@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardUseCompatPadding="true"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/dph5">
+
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/numberTxt"
+            android:textColor="@color/headeritemlistcolor"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="0"
+            android:layout_marginLeft="@dimen/dph10"
+            android:textSize="@dimen/sp15" />
+
+        <com.tupelo.wellness.view.CircularImageView
+            android:id="@+id/leaderImg"
+            android:layout_width="@dimen/dph50"
+            android:layout_height="@dimen/dph50"
+            android:layout_marginLeft="@dimen/dph10"
+            android:src="@drawable/background" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/leaderName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:font="light"
+            android:textColor="@color/date_hash"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dph10"
+            android:gravity="center_vertical"
+            android:text="Annal Simco"
+            android:textSize="@dimen/sp16" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginRight="@dimen/dph10"
+            android:layout_marginEnd="@dimen/dph5"
+            android:layout_height="match_parent"
+            android:gravity="center"
+
+            android:orientation="vertical">
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/leaderSteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="45,090"
+                android:textColor="@color/black_light"
+                app:font="regular"
+                android:lines="1"
+                android:textSize="@dimen/sp17" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:layout_width="match_parent"
+                android:id="@+id/first_steps_text"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:font="light"
+                android:textColor="@color/black_light"
+                android:text="STEPS"
+                android:textSize="@dimen/sp9" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

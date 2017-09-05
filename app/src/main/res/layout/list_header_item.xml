@@ -1,0 +1,58 @@
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.tupelo.wellness.view.CircularImageView
+            android:id="@+id/leaderImg"
+            android:layout_width="@dimen/dph60"
+            android:layout_centerHorizontal="true"
+            android:layout_height="@dimen/dph60"
+            android:layout_marginLeft="@dimen/dph22"
+            android:layout_marginTop="@dimen/dph35"
+            android:src="@drawable/background" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/numberTxt"
+            android:layout_width="@dimen/dph16"
+            android:layout_height="@dimen/dph16"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dph85"
+            android:background="@mipmap/fill"
+            android:gravity="center"
+            android:text="10"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+    <com.tupelo.wellness.view.NewTextView
+        android:text="Christos"
+        android:id="@+id/leaderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp11"
+        />
+    <com.tupelo.wellness.view.NewTextView
+        android:text="40,0000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/leaderSteps"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp11"
+        />
+    <com.tupelo.wellness.view.NewTextView
+        android:text="STEPS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp11"
+        />
+
+
+</LinearLayout>

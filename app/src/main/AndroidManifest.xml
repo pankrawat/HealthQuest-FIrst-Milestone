@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tupelo.wellness">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <permission
+        android:name="com.tupelo.wellness.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.tupelo.wellness.permission.C2D_MESSAGE" />
+
+    <application
+        android:name=".AppController"
+        android:allowBackup="true"
+        android:largeHeap="true"
+        android:fullBackupContent="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        tools:replace="android:icon"
+        android:theme="@style/AppTheme">
+
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.samsung.android.health.permission.read"
+            android:value="com.samsung.health.step_count;com.samsung.shealth.step_daily_trend;com.samsung.health.exercise;com.samsung.health.floors_climbed" />
+
+        <meta-data
+            android:name="com.tupelo.wellness.CLIENT_ID"
+            android:value="228LB7"/>
+        <meta-data
+            android:name="com.tupelo.wellness.REDIRECT_URL"
+            android:value="https://finished"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name">
+        </activity>
+
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider326037627746652"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true">
+        </provider>
+
+
+
+        <activity
+            android:name=".activity.SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.SignInActivity"
+            android:label="@string/title_activity_wclogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChooseTracker"
+            android:label="@string/title_activity_choose_tracker"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:label="@string/title_activity_signup_one"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SaveCouncilActivity"
+            android:label="@string/title_activity_signup_two"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TabActivity"
+            android:label="@string/title_activity_callback"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="walkingchallenge" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginOption"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MymoSerialNumber"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CompanyCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MymoOnBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ConfigureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginOrRegister"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GoogleFitOnBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GoogleFitHelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".imagecropper.CropImage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".jawbone.oauth.OauthWebViewActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.tupelo.cpcwalkingchallenge.jawbone.oauth.OauthWebViewActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+>        </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
+
+<!--        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.tupelo.wellness" />
+            </intent-filter>
+        </receiver>-->
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".MyFirebaseInstanceIDService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+  <!--      <service android:name=".GcmIntentService" />-->
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!--
+                <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.tupelo.wellness" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".GcmIntentService" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+        <service android:name="com.parse.PushService" />
+
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        -->
+        <!--
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                &lt;!&ndash; IMPORTANT: Change "com.parse.starter" to match your app's package name. &ndash;&gt;
+                <category android:name="com.tupelo.wellness" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        -->
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="74bdaf80f3fcb4feb3ba98a74eec7bfa5c113cc0" />
+
+        <!-- Original Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBxlrQhXjM2riAaeVODETDgNeWtMM5vouE" />
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.geo.API_KEY" -->
+        <!-- android:value="AIzaSyC8oh314m7EkVCD3PDTMlmNc-FTF4IglyA" /> -->
+
+
+        <!--
+        Debug Key
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDaucl6B50L8v7dc47Yevd4e2CxgSSwdRA" />
+        -->
+
+    </application>
+
+</manifest>

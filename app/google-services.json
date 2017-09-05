@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "308458819297",
+    "firebase_url": "https://healthquest-by-tupelolife.firebaseio.com",
+    "project_id": "healthquest-by-tupelolife",
+    "storage_bucket": "healthquest-by-tupelolife.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308458819297:android:2f515ba3cce36a64",
+        "android_client_info": {
+          "package_name": "com.tupelo.wellness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308458819297-l1i75nusf7smmbrunhqbbo9o5cdqma5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAygJ9ATEZmu7jnFNBqf7q5qNCws-rbTLo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.tupelo.wellness.activity.WebActivity">
+
+    <RelativeLayout
+        android:id="@+id/tabanim_appbar0"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tabanim_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/textAppName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dph45"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dph32"
+            android:paddingRight="@dimen/dph32"
+            app:font="light"
+            android:text="@string/app_name_bar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp18"  />
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabanim_appbar0"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>

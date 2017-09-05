@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.tupelo.wellness.view.NewTextView
+        android:id="@+id/userName"
+        android:text=""
+        android:paddingLeft="@dimen/dp8"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="@dimen/dp4"/>
+
+
+    <RelativeLayout
+        android:id="@+id/incoming_layout_bubbleleftt"
+        android:layout_below="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp5">
+
+        <LinearLayout
+            android:id="@+id/incoming_layout_bubbleleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/balloon_incoming_normal"
+            android:padding="@dimen/dp4"
+            android:visibility="visible">
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/chat_timeleft"
+                style="@style/chat_text_message_style1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|left"
+                android:layout_marginLeft="@dimen/dp4"
+
+                android:text="2:60 pm"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp10"
+                android:visibility="visible" />
+
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/chat_messageleft"
+                style="@style/chat_text_message_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="bottom|right"
+                android:maxWidth="240dp"
+                android:paddingLeft="6dp"
+                android:text="hgfghsdfsdfsfsdsdfsdsjkghsjgjdjgjdfgjdjhgjdgjfbdhfgg"
+                android:textSize="@dimen/sp14" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/outgoing_layout_bubbleritt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp5"
+        android:visibility="visible">
+
+
+        <LinearLayout
+            android:id="@+id/outgoing_layout_bubblerit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/balloon_outgoing_normal"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp4"
+            android:visibility="invisible"
+            android:weightSum="100">
+
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/chat_messagerit"
+                style="@style/chat_text_message_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:gravity="bottom"
+                android:maxWidth="240dp"
+                android:paddingRight="6dp"
+                android:text="cxcxcx"
+                android:textSize="@dimen/sp14" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/chat_timerit"
+                style="@style/chat_text_message_style2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+
+                android:text="2:60 pm"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp10"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

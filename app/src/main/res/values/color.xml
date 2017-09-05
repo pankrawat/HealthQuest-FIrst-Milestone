@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ColorPrimary">#5CC0AB</color>
+    <color name="ColorPrimaryDark">#4D61AB</color>
+    <color name="tabsScrollColor">#8a140e</color>
+    <color name="tooltipBg">#BF000000</color>
+    <color name="bgOffWhite">#f8f3ef</color>
+
+    <color name="profile_text">#aa000000</color>
+    <color name="profile_hint">#50000000</color>
+
+    <color name="blue">#50bae8</color>
+    <color name="blue_submit">#3dc2d5</color>
+    <color name="green_progress">#009688</color>
+    <color name="green">#00ff00</color>
+    <color name="red">#ff0000</color>
+    <color name="black_mask">#60000000</color>
+
+
+    <color name="pn_red">#d02129</color>
+    <color name="pn_blue">#ff19a2c6</color>
+
+
+
+
+    <color name="wc_default">#2b2b2c</color>
+    <color name="colorPrimary">#ff19a2c6</color>
+    <color name="colorPrimaryDark">#049299</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_light">#aaffffff</color>
+    <color name="black_light">#32333e</color>
+    <color name="black">#32333e</color>
+    <color name="OffBlack">#32333e</color>
+    <color name="date_hash">#32333e</color>
+    <color name="headeritemlistcolor">#32333e</color>
+
+
+
+    <color name = "comp1">#f44336</color>
+
+    <color name = "comp2">#e91363</color>
+
+    <color name = "comp3">#9c27b0</color>
+
+    <color name = "comp4">#673ab7</color>
+
+    <color name = "comp5">#3f51b5</color>
+
+    <color name = "comp6">#2196f3</color>
+
+    <color name = "comp7">#03a9f4</color>
+
+    <color name = "comp8">#00bcd4</color>
+
+    <color name = "comp9">#009688</color>
+
+    <color name = "comp10">#4caf50</color>
+
+    <color name = "comp11">#ff9800</color>
+
+    <color name = "comp12">#ff5722</color>
+
+    <color name = "comp13">#795548</color>
+
+    <color name = "comp14">#607d8b</color>
+
+    <color name = "comp15">#252525</color>
+
+    <color name = "comp16">#ffc107</color>
+    <color name="black_transparent">#14000000</color>
+    <color name="active_indicator">@android:color/white</color>
+    <color name="inactive_indicator">#4D000000</color>
+
+
+
+</resources>

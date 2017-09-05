@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tupelo.wellness.view.RaleTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tab"
+    android:layout_gravity="center"
+    android:textColor="@color/date_hash"
+    android:textSize="@dimen/sp9.6"
+    app:font="regular"
+    android:gravity="center" />

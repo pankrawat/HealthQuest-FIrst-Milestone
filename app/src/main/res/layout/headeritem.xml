@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_user_rank"
+    card_view:cardUseCompatPadding="true"
+    android:background="#ffffff"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout  android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp5"
+        android:clickable="true"
+        android:paddingBottom="@dimen/dp5"
+        android:paddingLeft="@dimen/dph22"
+        android:paddingRight="@dimen/dp22"
+        android:orientation="horizontal">
+
+        <com.tupelo.wellness.circularimageview.CircularImageView
+            android:id="@+id/profileImg"
+            android:layout_width="@dimen/dph60"
+            android:layout_height="@dimen/dph60"
+            android:background="@mipmap/default_user_dark" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="Me"
+                    android:textSize="@dimen/sp17"
+                    android:visibility="invisible"/>
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:font="light"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="CHANGE"
+                    android:textColor="@android:color/holo_blue_light" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/changeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:textColor="@color/headeritemlistcolor"
+                    android:textSize="@dimen/sp14"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal|top"
+                    app:font="medium"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textColor="@color/headeritemlistcolor"
+                    app:font="light"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="Me"
+                    android:textSize="@dimen/sp15" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:font="light"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="RANK"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/headerRnkTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textColor="@color/headeritemlistcolor"
+                    android:layout_weight="1"
+                    app:font="medium"
+                    android:gravity="center_horizontal|top"
+                    android:textSize="@dimen/sp14"
+                    android:text="12" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="Me"
+                    android:textSize="@dimen/sp17"
+                    android:visibility="invisible"/>
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:font="light"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="STEPS"
+                    android:textColor="@android:color/holo_orange_light" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/headerStepsTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:font="medium"
+                    android:textColor="@color/headeritemlistcolor"
+                    android:textSize="@dimen/sp14"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|top"
+
+                    android:text="16943" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

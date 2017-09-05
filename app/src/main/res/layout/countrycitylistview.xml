@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.tupelo.wellness.view.NewEditText  android:id="@+id/inputSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        app:font="light"
+        android:inputType="textVisiblePassword"/>
+    <ListView
+        android:id="@+id/countrycitylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@android:color/transparent"/>
+</LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="#f6b500">
+
+
+        <com.tupelo.wellness.view.CircularImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/dph20"
+            android:layout_height="@dimen/dph20"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp15"
+            android:background="@mipmap/crosss" />
+
+        <com.tupelo.wellness.view.CircularImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/dph80"
+            android:layout_height="@dimen/dph80"
+            android:layout_below="@+id/close"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dpneg40"
+            android:background="@mipmap/prizee" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/congo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_marginTop="@dimen/dph45"
+            android:gravity="bottom|center_horizontal"
+            android:padding="@dimen/dph3"
+            android:text="Conguratulation!"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp16" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/dis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/congo"
+            android:gravity="bottom|center_horizontal"
+            android:padding="@dimen/dph3"
+            android:maxLines="5"
+            android:maxEms="20"
+            android:text="@string/get_company_code"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp14" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dis"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp15">
+
+
+                <com.tupelo.wellness.view.CircularImageView
+                    android:id="@+id/fb"
+                    android:layout_width="@dimen/dph45"
+                    android:layout_height="@dimen/dph45"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp35"
+                    android:background="@mipmap/facebookk" />
+
+                <com.tupelo.wellness.view.CircularImageView
+                    android:id="@+id/tw"
+                    android:layout_width="@dimen/dph45"
+                    android:layout_height="@dimen/dph45"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/fb"
+                    android:background="@mipmap/twitterr" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

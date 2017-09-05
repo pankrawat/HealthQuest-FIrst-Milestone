@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
+
+    <view
+        android:id="@+id/image"
+        class="com.tupelo.wellness.imagecropper.CropImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_x="0dip"
+        android:layout_y="0dip" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip">
+
+
+
+        <com.tupelo.wellness.view.NewButton
+            android:id="@+id/discard"
+            android:layout_marginBottom="@dimen/dph5"
+            android:layout_alignParentLeft="true"
+            android:text="@string/cancel"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/dph5"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_corner"
+            android:layout_alignParentBottom="true"/>
+
+        <View android:layout_height="match_parent"
+            android:layout_width="@dimen/dph15"
+            android:rotation="45"
+            />
+
+
+        <ImageButton
+            android:id="@+id/rotateLeft"
+            android:layout_marginRight="@dimen/dph5"
+            android:layout_marginLeft="@dimen/dph5"
+            android:background="@drawable/rounded_corner"
+            android:layout_width="50dp"
+            android:layout_marginBottom="@dimen/dph5"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/discard"
+            android:padding="5dp"
+            android:src="@mipmap/ic_rotate"
+            android:scaleX="-1" />
+
+
+
+
+
+        <ImageButton
+            android:id="@+id/rotateRight"
+            android:layout_marginRight="@dimen/dph5"
+            android:background="@drawable/rounded_corner"
+            android:layout_width="50dp"
+            android:layout_marginBottom="@dimen/dph5"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/rotateLeft"
+            android:src="@mipmap/ic_rotate" />
+
+
+        <com.tupelo.wellness.view.NewButton
+            android:layout_marginBottom="@dimen/dph5"
+            android:id="@+id/save"
+            android:layout_toRightOf="@id/rotateRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_corner"
+            android:text="@string/save"
+            android:layout_alignParentBottom="true"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

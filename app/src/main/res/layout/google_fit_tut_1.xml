@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_1">
+
+    <com.tupelo.wellness.view.NewTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Download Google fit App from"
+        android:textColor="@color/white"
+        android:id="@+id/textView9"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <ImageButton
+        android:id="@+id/btnPlayStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@mipmap/playstore_normal"
+        android:layout_below="@+id/textView9"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <com.tupelo.wellness.view.NewButton
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:text="NEXT"
+        android:textColor="#df3434"
+        android:textSize="16sp"/>
+
+</RelativeLayout>

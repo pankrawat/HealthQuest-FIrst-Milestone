@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dph20">
+
+            <com.tupelo.wellness.view.CircularImageView
+                android:id="@+id/leaderImg"
+                android:layout_width="@dimen/dph50"
+                android:layout_height="@dimen/dph50"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/dph22" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/numberTxt"
+                android:layout_width="@dimen/dph16"
+                android:layout_height="@dimen/dph16"
+                android:layout_below="@+id/leaderImg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dphneg8"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:font="light" />
+        </RelativeLayout>
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/leaderName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp11"
+            app:font="light" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/leaderSteps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp13"
+            app:font="light" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/first_steps_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="STEPS"
+            android:textColor="@color/black_light"
+            android:textSize="@dimen/sp11"
+            android:visibility="invisible"
+            app:font="light" />
+
+
+    </LinearLayout>

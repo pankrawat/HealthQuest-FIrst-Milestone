@@ -1,0 +1,167 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayoutDash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/relativeTop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dph1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/circle" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <com.tupelo.wellness.view.NewTextView
+                            android:id="@+id/steps_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="STEPS"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp14" />
+
+                        <com.tupelo.wellness.view.NewTextView
+                            android:id="@+id/tv_steps_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/steps_label"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp22" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <com.tupelo.wellness.CFlipper
+                    android:id="@+id/flipper"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dph140"
+                    android:layout_marginLeft="@dimen/dph10"
+                    android:layout_marginRight="@dimen/dph10"
+                    android:focusable="true"
+                    android:scaleType="fitXY" />
+
+
+                <LinearLayout
+                    android:id="@+id/dotLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dph8"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/dph3"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dph10">
+
+                <LinearLayout style="@style/ll_dashboard_steps">
+
+                    <ImageView
+                        android:id="@+id/iv_yesterday"
+                        style="@style/iv_dashboard_circle_icon"
+                        android:src="@mipmap/yesterday_step" />
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_yesterday"
+                        style="@style/tv_dashboard_text"
+                        android:text="YESTERDAY STEPS" />
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_yesterday_steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dph5"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dashboard_steps" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ll_dashboard_steps">
+
+                    <ImageView
+                        android:id="@+id/iv_best_single"
+                        style="@style/iv_dashboard_circle_icon"
+                        android:src="@mipmap/best_single_day" />
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_best_single"
+                        style="@style/tv_dashboard_text"
+                        android:singleLine="true"
+                        android:text="BEST SINGLE DAY" />
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_best_steps"
+                        style="@style/tv_dashboard_steps"
+                        android:text="0" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ll_dashboard_steps">
+
+                    <ImageView
+                        android:id="@+id/iv_total_steps"
+                        style="@style/iv_dashboard_circle_icon"
+                        android:src="@mipmap/total_steps" />
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_total"
+                        style="@style/tv_dashboard_text"
+                        android:singleLine="true"
+                        android:text="TOTAL STEPS" />
+
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_total_steps"
+                        style="@style/tv_dashboard_steps"
+                        android:text="0" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

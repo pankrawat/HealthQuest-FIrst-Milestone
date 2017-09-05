@@ -1,0 +1,283 @@
+<resources  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="colorControlActivated">#2196F3</item>
+        <item name="colorControlHighlight">#2196F3</item>
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+
+
+    </style>
+
+    <style name="chat_text_message_style2">
+
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+    <style name="chat_text_message_style1">
+
+
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">15dp</item>
+
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+    <style name="chat_text_message_style">
+
+    <item name="android:paddingTop">5dp</item>
+    <item name="android:paddingBottom">5dp</item>
+    <item name="android:paddingLeft">8dp</item>
+    <item name="android:paddingRight">8dp</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@android:color/black</item>
+
+</style>
+
+
+
+    <style name="timeStampNewsFeed" >
+        <item name="android:textSize">@dimen/sp12</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:text">5h</item>
+    </style>
+
+
+    <style name="captionNewsFeed" >
+        <item name="android:textSize">@dimen/sp13</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/white_light</item>
+         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+       <item name="android:layout_marginTop">@dimen/dpneg15</item>
+        <item name="colorAccent">@color/white_light</item>
+        <item name="colorControlNormal">@color/white_light</item>
+        <item name="colorControlActivated">@color/white_light</item>
+    </style>
+
+    <style name="TextLabelProfile" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/black_light</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="android:layout_marginTop">@dimen/dpneg15</item>
+        <item name="colorAccent">@color/black_light</item>
+        <item name="colorControlNormal">@color/black_light</item>
+        <item name="colorControlActivated">@color/black_light</item>
+    </style>
+
+
+    <style name="myTheme" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="iv_dashboard">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="iv_dashboard_circle_icon">
+        <item name="android:layout_height">@dimen/dph25</item>
+        <item name="android:layout_width">@dimen/dph25</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/dph11</item>
+
+    </style>
+
+    <style name="tv_dashboard_steps">
+        <item name="android:layout_marginTop">@dimen/dph5</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/dashboard_steps</item>
+    </style>
+
+    <style name="ll_dashboard_steps">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dph85</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="tv_dashboard_text">
+
+        <item name="android:textColor">@color/black</item>
+        <item name = "android:singleLine">true</item>
+        <item name="android:layout_marginTop">@dimen/dph11</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/sp9</item>
+    </style>
+
+    <style name="et_signup">
+        <item name="android:layout_width">290dp</item>
+        <item name="android:layout_height">27dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">#80000000</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textColorHint">#60ffffff</item>
+    </style>
+
+
+    <style name="et_signin">
+        <item name="android:layout_width">290dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">#32000000</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="btn_sign_in">
+        <item name="android:layout_width">290dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">@color/blue_submit</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="btn_sign_up">
+        <item name="android:layout_width">290dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">@color/blue_submit</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="tv_sign_in_up">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="stylEdtTxt">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="stylTxtVu">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="CropButton">
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/selector_crop_button</item>
+    </style>
+
+    <style name="ShowcaseButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">96dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/button</item>
+    </style>
+
+    <style name="TextAppearance.ShowcaseView.Title" parent="android:style/TextAppearance.Large">
+        <item name="android:textColor">#33B5E5</item>
+    </style>
+
+    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="CustomShowcaseTheme" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#CC000000</item>
+        <item name="sv_showcaseColor">#00801A</item>
+        <item name="sv_buttonText">Hide</item>
+        <item name="sv_tintButtonColor">false</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+    </style>
+
+    <style name="ShowcaseView.Light">
+        <item name="sv_titleTextAppearance">@style/TextAppearance.ShowcaseView.Title</item>
+        <item name="sv_detailTextAppearance">@style/TextAppearance.ShowcaseView.Detail.Light</item>
+        <item name="sv_backgroundColor">#3333B5E5</item>
+        <item name="sv_buttonText">@android:string/ok</item>
+    </style>
+
+    <style name="ShowcaseView">
+        <item name="sv_titleTextAppearance">@style/TextAppearance.ShowcaseView.Title</item>
+        <item name="sv_detailTextAppearance">@style/TextAppearance.ShowcaseView.Detail</item>
+        <item name="sv_backgroundColor">#3333B5E5</item>
+        <item name="sv_buttonText">@android:string/ok</item>
+    </style>
+
+    <style name="TextAppearance.ShowcaseView.Detail" parent="android:style/TextAppearance">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="TextAppearance.ShowcaseView.Detail.Light">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:shadowColor">#CC000000</item>
+        <item name="android:shadowRadius">0</item>
+    </style>
+
+    <!--theme for chat-->
+    <style name="AppTheme1" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme1.ChannelBar" parent="AppTheme1">
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/pn_blue</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme1.MessageBar" parent="AppTheme1"></style>
+    <!--theme for chat ends-->
+    <declare-styleable name="FontStyle">
+        <attr name="font" format="enum">
+            <enum name="light" value="0" />
+            <enum name="medium" value="1" />
+            <enum name="regular" value="2" />
+            <enum name="bold" value="3" />
+        </attr>
+    </declare-styleable>
+</resources>

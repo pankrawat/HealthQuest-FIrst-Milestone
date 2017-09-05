@@ -1,0 +1,347 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.tupelo.wellness.activity.MyProfile">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/dph10">
+
+            <com.tupelo.wellness.view.CircularImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/dph80"
+                android:layout_height="@dimen/dph80"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dph5"
+                android:clickable="false" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/editPhotoTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_profile"
+                android:layout_centerHorizontal="true"
+                android:text="Edit Photo"
+                android:visibility="gone"
+                app:font="light" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editPhotoTV"
+                android:layout_marginBottom="@dimen/dph15"
+                android:layout_marginRight="@dimen/dph8"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="textPersonName"
+                android:paddingBottom="@dimen/dph3"
+                android:paddingLeft="@dimen/dph3"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black_light"
+                android:textSize="@dimen/sp17"
+                app:font="light" />
+
+
+            <LinearLayout
+                android:id="@+id/mainll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userName"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="@dimen/dph7"
+                    android:layout_marginTop="@dimen/dph8"
+                    android:orientation="horizontal">
+
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/et_fname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dph8"
+                            android:layout_weight="1"
+                            android:background="@drawable/black_line"
+                            android:hint="First Name"
+                            android:inputType="textPersonName"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/et_lname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dph8"
+                            android:layout_weight="1"
+                            android:background="@drawable/black_line"
+                            android:hint="Last Name"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:paddingBottom="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="@dimen/dph7"
+                    android:layout_marginTop="@dimen/dph8"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/auto_country"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dph8"
+                            android:layout_weight="1"
+                            android:background="@drawable/black_line"
+                            android:focusableInTouchMode="false"
+                            android:hint="Country"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:id="@+id/til_city"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile"
+                        android:visibility="gone">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/auto_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dph8"
+                            android:background="@drawable/black_line"
+                            android:focusableInTouchMode="false"
+                            android:hint="City"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/til_zip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile"
+                        android:visibility="gone">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/auto_zip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dph8"
+                            android:background="@drawable/black_line"
+                            android:hint="Zip Code"
+                            android:inputType="number"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="@dimen/dph7"
+                    android:layout_marginTop="@dimen/dph8"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/tv_height"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dph8"
+                            android:background="@drawable/black_line"
+                            android:focusableInTouchMode="false"
+                            android:hint="Height"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_light"
+                        android:theme="@style/TextLabelProfile">
+
+                        <com.tupelo.wellness.view.NewEditText
+                            android:id="@+id/tv_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dph8"
+                            android:background="@drawable/black_line"
+                            android:focusableInTouchMode="false"
+                            android:hint="Weight"
+                            android:paddingBottom="@dimen/dph3"
+                            android:paddingLeft="@dimen/dph3"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_light"
+                            android:textSize="@dimen/sp16"
+                            app:font="light" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dph8"
+
+                    android:layout_marginLeft="@dimen/dph7"
+                    android:layout_marginTop="@dimen/dph15"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/radio_profile"
+                        android:enabled="false"
+                        android:text=" Male"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_light"
+                        android:textSize="@dimen/sp16" />
+
+                    <RadioButton
+                        android:id="@+id/rb_female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dph21"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:button="@drawable/radio_profile"
+                        android:enabled="false"
+                        android:text=" Female"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_light"
+                        android:textSize="@dimen/sp16" />
+                </RadioGroup>
+
+                <android.support.design.widget.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textColorHint="@color/black_light"
+                    android:theme="@style/TextLabelProfile">
+
+                    <com.tupelo.wellness.view.NewEditText
+                        android:id="@+id/tv_birthdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dph7"
+                        android:background="@drawable/black_line"
+                        android:focusableInTouchMode="false"
+                        android:gravity="left"
+                        android:hint="Date Of Birth"
+                        android:paddingBottom="@dimen/dph3"
+                        android:paddingLeft="@dimen/dph3"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_light"
+                        android:textSize="@dimen/sp16"
+                        app:font="light" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.tupelo.wellness.view.NewButton
+                android:id="@+id/edit"
+                android:layout_width="@dimen/dph120"
+                android:layout_height="@dimen/dph35"
+                android:layout_below="@+id/mainll"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dph22"
+                android:background="@drawable/rounded_corder_fully_transparent"
+                android:text="Edit"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

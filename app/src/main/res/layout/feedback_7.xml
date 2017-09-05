@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><!--Text Only News Feed-->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dph3"
+    android:background="#ffffff"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dph10">
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/feed_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            app:font="light"
+            android:text=""
+            style="@style/captionNewsFeed"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feed_caption"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/twitter" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/feed_user"
+                    android:layout_width="wrap_content"
+                    app:font="light"
+                    android:textSize="@dimen/sp12"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dph5"
+                    android:text="NHL" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dph5"
+                    android:text="-" />
+
+                <com.tupelo.wellness.view.NewTextView
+                    style="@style/timeStampNewsFeed"
+                    android:id="@+id/feed_timestamp"
+                    app:font="light"
+                    android:layout_marginLeft="@dimen/dph5" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

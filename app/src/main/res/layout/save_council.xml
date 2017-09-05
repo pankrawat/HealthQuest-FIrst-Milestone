@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/backgroundColor"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent"
+    tools:context="com.tupelo.wellness.activity.SignUpActivity">
+    <!--
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/register_1st_page"  />
+    -->
+
+
+    <com.tupelo.wellness.view.NewTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dph12"
+        android:layout_alignParentTop="true"
+        android:id="@+id/registertitle"
+        android:layout_centerHorizontal="true"
+        android:text="REGISTER"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp16" />
+    <!-- here the two circular image view are given because in iv_profile its
+     being checked wether the src is null or not, and if the source is null
+     the dialog for proceed is shown in java, if i set default user on source the
+     popup would not show, and if i set in background then border wont visible
+     so i have came up with this solution -->
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/bg"
+        app:border="true"
+        app:border_width="@dimen/dph8"
+        app:border_color="#50ffffff"
+        android:src="@mipmap/default_user"
+        android:layout_below="@id/registertitle"
+        android:layout_width="@dimen/dph90"
+        android:layout_height="@dimen/dph90"
+        android:layout_centerHorizontal="true"/>
+
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/iv_profile"
+        app:border="true"
+        app:border_width="@dimen/dph8"
+        app:border_color="#50ffffff"
+        android:layout_below="@id/registertitle"
+        android:layout_width="@dimen/dph90"
+        android:layout_height="@dimen/dph90"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:src="@mipmap/default_user"
+        android:layout_width="@dimen/dph90"
+        android:id="@+id/tv_click"
+        android:layout_below="@id/registertitle"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="@dimen/dph90">
+
+        <com.tupelo.wellness.view.NewTextView
+            app:font="light"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click Here to" />
+
+        <com.tupelo.wellness.view.NewTextView
+            app:font="bold"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD IMAGE" />
+    </LinearLayout>
+
+
+
+    <com.tupelo.wellness.view.NewTextView
+        android:id="@+id/tv_app_name"
+        android:text="Good Steps"
+        android:layout_marginBottom="@dimen/dph30"
+        android:layout_marginTop="@dimen/dph5"
+        style="@style/tv_sign_in_up"
+        android:layout_below="@+id/iv_profile"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        app:font="light"
+        android:textSize="@dimen/sp22" />
+
+
+    <com.tupelo.wellness.view.NewEditText
+        android:id="@+id/et_zip"
+        style="@style/et_signup"
+        android:layout_below="@id/tv_app_name"
+        android:layout_marginTop="10dp"
+        android:hint="@string/zip"
+        android:inputType="number"
+        android:singleLine="true"
+        android:visibility="gone" />
+
+    <Spinner
+        android:id="@+id/down_division"
+        android:layout_marginLeft="@dimen/dph20"
+        android:layout_marginRight="@dimen/dph20"
+        android:paddingBottom="@dimen/dph5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_zip"
+        android:background="@drawable/white_line"
+        android:spinnerMode="dialog" />
+
+    <Spinner
+        android:id="@+id/sector_down"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dph20"
+        android:paddingBottom="@dimen/dph5"
+        android:layout_marginRight="@dimen/dph20"
+        android:layout_marginTop="@dimen/dph15"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/down_division"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/white_line"
+        android:spinnerMode="dialog" />
+
+
+    <com.tupelo.wellness.view.NewButton
+        android:id="@+id/btn_register_council"
+        android:layout_width="@dimen/dpw130"
+        android:layout_height="@dimen/dph40"
+        android:textSize="@dimen/sp16"
+        android:textAllCaps="false"
+        android:layout_marginBottom="@dimen/dph45"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_corner"
+        android:text="Save"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/backgroundColor"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.MymoHelpActivity">
+
+    <com.tupelo.wellness.VuFlipper
+        android:id="@+id/vuFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:id="@+id/dotLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_50dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            android:padding="@dimen/padding_5dp" />
+
+
+        <com.tupelo.wellness.view.NewButton
+            android:id="@+id/btnNext"
+            app:font="light"
+            android:padding="@dimen/dph5"
+            android:layout_marginLeft="@dimen/dph5"
+            android:layout_marginRight="@dimen/dph5"
+            android:layout_marginBottom="@dimen/dph5"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e9e5e5"
+            android:text="Next"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

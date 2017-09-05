@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dph12">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/cheaderTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male vs Female (Day 2)"
+                    android:textSize="@dimen/sp13" />
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/cDescTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                    android:textSize="@dimen/sp10" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="@dimen/height_50dp"
+                android:layout_height="@dimen/height_50dp"
+                android:padding="5dp"
+                android:src="@mipmap/check"/>
+
+        </LinearLayout>
+    </LinearLayout>

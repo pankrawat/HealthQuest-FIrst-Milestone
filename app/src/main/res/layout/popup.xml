@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/card"
+            android:paddingBottom="@dimen/dph5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dph160"
+            android:layout_centerInParent="true"
+
+            android:layout_marginLeft="@dimen/dph27"
+            android:layout_marginRight="@dimen/dph27"
+            android:background="@drawable/rounded_corner"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|center_horizontal"
+                    android:padding="@dimen/dph3"
+                    android:layout_marginTop="@dimen/dph50"
+                    android:text="@string/get_company_code"
+                    android:textSize="@dimen/sp14" />
+
+              <Button
+                  android:layout_width="wrap_content"
+                  android:layout_height="@dimen/dph30"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="@dimen/dph5"
+                  android:background="@drawable/rounded_button"
+                  android:text="OK"
+                  android:id="@+id/ok"
+                  android:textColor="@color/white"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.tupelo.wellness.view.CircularImageView
+            android:layout_width="@dimen/dph85"
+            android:layout_height="@dimen/dph85"
+            android:layout_above="@+id/card"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dpneg40"
+            android:background="@mipmap/lock"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

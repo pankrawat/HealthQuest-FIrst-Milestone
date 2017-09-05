@@ -1,0 +1,146 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/left_drawer"
+    android:layout_width="@dimen/dph70"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@android:color/white"
+    android:choiceMode="singleChoice"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dph20">
+
+    <com.tupelo.wellness.circularimageview.CircularImageView
+        android:layout_width="@dimen/dph60"
+        android:layout_height="@dimen/dph60"
+        android:id="@+id/profileImg"
+        android:layout_marginBottom="@dimen/dph10"
+        android:layout_gravity="center" />
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginLeft="@dimen/dph2"
+      android:layout_marginRight="@dimen/dph2"
+      android:background="#BDBDBD"/>
+
+
+    <LinearLayout
+        android:id="@+id/defaultPreviousLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:tag="home"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/home" />
+
+        <com.tupelo.wellness.view.NewTextView
+            app:font="regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="Home" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:tag="profile"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/profile" />
+
+        <com.tupelo.wellness.view.NewTextView
+            app:font="regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="Profile" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:tag="mydevice"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/my_device" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:layout_width="wrap_content"
+            app:font="regular"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="My Device" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_tab_chat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:visibility="gone"
+        android:tag="chat"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/chat" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="Chat" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:tag="logout"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logout" />
+
+        <com.tupelo.wellness.view.NewTextView
+            app:font="regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="Logout" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/OffBlack"
+    tools:context=".activity.ConfigureActivity">
+
+
+    <RelativeLayout
+        android:layout_width="@dimen/dph160"
+        android:layout_height="@dimen/dph200"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dph180"
+        >
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+
+        <View android:layout_height="0dp"
+            android:layout_weight="100"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:id="@+id/hidden"/>
+
+        <View android:layout_height="0dp"
+            android:background="#fcd75a"
+            android:layout_weight="0"
+            android:layout_width="match_parent"
+            android:id="@+id/filled"/>
+    </LinearLayout>
+
+        <com.tupelo.wellness.view.NewTextView android:id="@+id/update_percent"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:text="0%"
+            app:font="regular"
+            android:textSize="@dimen/sp23"
+            android:layout_marginTop="@dimen/dph60"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+<!--
+    <me.itangqi.waveloadingview.WaveLoadingView
+        android:id="@+id/waveLoadingView"
+        android:layout_width="@dimen/dph160"
+        android:layout_height="@dimen/dph180"
+        android:layout_marginTop="@dimen/dph170"
+        android:layout_centerHorizontal="true"
+        app:wlv_borderColor="@color/colorAccent"
+        app:wlv_borderWidth="3dp"
+        app:wlv_progressValue="0"
+        app:wlv_round_rectangle="true"
+        app:wlv_shapeType="rectangle"
+        app:wlv_titleCenter="0%"
+        app:wlv_titleCenterColor="@color/white"
+        app:wlv_titleCenterSize="24sp"
+        app:wlv_waveAmplitude=".1"
+        app:wlv_waveColor="@color/colorAccent" />-->
+
+    <ImageView
+
+        android:id="@+id/iv_green_bg"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:src="@mipmap/bg_generic_screen"
+        android:scaleType="centerCrop"/>
+
+
+</RelativeLayout>

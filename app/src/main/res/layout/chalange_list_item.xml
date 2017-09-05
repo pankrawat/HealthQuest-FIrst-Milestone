@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/dph5"
+    android:layout_marginLeft="@dimen/dph5"
+    android:layout_marginRight="@dimen/dph5"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dph5"
+        android:layout_marginLeft="@dimen/dph1"
+        android:layout_marginRight="@dimen/dph1"
+        android:background="@color/white"
+        card_view:cardCornerRadius="@dimen/dph6"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dph180">
+
+            <ImageView
+                android:id="@+id/challenge_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dph50"
+                android:background="@color/black_mask"
+                android:gravity="center"
+
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dph12">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/challenge_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male vs Female (Day 2)"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp13"
+                    app:font="regular" />
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/challenge_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Daily Challenge"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp10"
+                    app:font="light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dph50"
+                android:layout_alignParentBottom="true"
+                android:background="@color/black_mask"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dph3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/start_time_heading"
+                        android:layout_width="@dimen/dph70"
+                        android:layout_height="@dimen/dph20"
+                        android:background="@drawable/rounded_button"
+                        android:gravity="center"
+                        android:text="Start Time"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp11"
+                        app:font="regular" />
+
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_starttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dph5"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp10"
+                        app:font="regular" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/end_time_heading"
+                        android:layout_width="@dimen/dph70"
+                        android:layout_height="@dimen/dph20"
+                        android:background="@drawable/rounded_button"
+                        android:gravity="center"
+                        android:text="End Time"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp11"
+                        app:font="regular" />
+
+
+                    <com.tupelo.wellness.view.NewTextView
+                        android:id="@+id/tv_endtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dph5"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp10"
+                        app:font="regular" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

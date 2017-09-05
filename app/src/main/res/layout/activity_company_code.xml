@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".activity.CompanyCodeActivity">
+
+<!--
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/color_comination_sample_01"/>
+-->
+
+
+    <com.tupelo.wellness.view.NewTextView
+        android:id="@+id/tv_input_your"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dph28"
+        android:gravity="center"
+        app:font="regular"
+        android:text="@string/input_your"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp16"
+         />
+
+    <com.tupelo.wellness.view.NewTextView
+        android:id="@+id/tv_company_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_input_your"
+        android:gravity="top|center_horizontal"
+        android:text="@string/company_code"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp24"
+        app:font="light" />
+
+    <ImageView
+        android:id="@+id/iv_shield"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_company_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dph38"
+        android:src="@mipmap/shield" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp28"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_below="@id/iv_shield"
+        android:layout_marginTop="@dimen/dph50"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/compcodequestion"
+            android:visibility="visible"
+            android:layout_height="@dimen/dph32"
+            android:orientation="horizontal">
+
+            <com.tupelo.wellness.view.NewButton
+                android:id="@+id/tv_question_mark"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="#ff5252"
+                android:gravity="center"
+                android:text="@string/question_mark"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp20"
+                android:textStyle="bold"
+                app:font="bold" />
+
+            <com.tupelo.wellness.view.NewEditText
+                android:id="@+id/et_company_code"
+                android:layout_width="0dp"
+                app:font="light"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:hint="@string/input_company_code"
+                android:paddingEnd="@dimen/dph8"
+                android:paddingLeft="@dimen/dph8"
+                android:paddingRight="@dimen/dph8"
+                android:paddingStart="@dimen/dph8"
+                android:singleLine="true"
+                android:textSize="@dimen/sp16"
+                />
+        </LinearLayout>
+
+
+    <com.tupelo.wellness.view.NewButton
+        android:id="@+id/downloadImages"
+        android:layout_below="@+id/compcodequestion"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph32"
+        android:layout_centerHorizontal="true"
+        android:background="#ff5252"
+        app:font="light"
+        android:textAllCaps="false"
+        android:layout_marginTop="@dimen/dph10"
+        android:tag="downloadImages"
+        android:textSize="@dimen/sp17"
+        android:textColor="@color/white"
+        android:text="Submit" />
+
+
+    </LinearLayout>
+</RelativeLayout>

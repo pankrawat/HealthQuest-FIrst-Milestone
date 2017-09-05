@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="@dimen/dph5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:src="@drawable/background"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#40000000"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/dph12">
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/tv_title"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Male vs Female (Day 2)"
+                android:textSize="@dimen/sp16" />
+
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/tv_message"
+                android:layout_marginTop="@dimen/dph5"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Daily Challenge"
+                android:lineSpacingExtra="@dimen/dph3"
+                android:textSize="@dimen/sp13" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

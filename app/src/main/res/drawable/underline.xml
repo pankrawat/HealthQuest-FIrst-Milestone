@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Used for the bottom line when not selected / focused -->
+    <item name="colorControlNormal">#9e9e9e</item>
+    <!-- colorControlActivated & colorControlHighlight use the colorAccent color by default -->
+
+</selector>

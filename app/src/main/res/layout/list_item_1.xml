@@ -1,0 +1,136 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@mipmap/bg_half"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.tupelo.wellness.circularimageview.CircularImageView
+            android:id="@+id/profileImg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/default_user"
+            android:layout_marginTop="12dp" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/headerNameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="NAME"
+            android:textSize="@dimen/nameTxtSize" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+
+            >
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/tvchange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/white"
+                android:text="Change"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+
+                android:textSize="@dimen/nameTxtSize"
+                android:layout_gravity="center" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/changeTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/dashboard_steps"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+
+            >
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/tvrank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/purple"
+                android:text="Rank"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/nameTxtSize"
+                android:layout_gravity="center" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/headerRnkTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/dashboard_steps"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/tvstep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableTop="@mipmap/yellow"
+                android:text="Steps"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/nameTxtSize"
+                android:layout_gravity="center" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/headerStepsTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="@dimen/dashboard_steps"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

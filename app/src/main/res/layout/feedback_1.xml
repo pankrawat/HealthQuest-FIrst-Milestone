@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--Text Only News Feed-->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:layout_margin="@dimen/dph3"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dph15">
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/feed_title"
+            style="@style/captionNewsFeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Casier Lenardo"
+            android:textColor="@android:color/black"
+             />
+
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/feed_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:font="light"
+            android:autoLink="web"
+            android:layout_marginTop="@dimen/dph10"
+            android:text=""
+            android:textSize="@dimen/sp13" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/feed_timestamp"
+            app:font="light"
+            style="@style/timeStampNewsFeed"
+            android:layout_marginTop="@dimen/dph10"
+          />
+
+    <!--    <ImageView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feed_caption"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dph10"
+            android:src="@mipmap/icon"
+            />-->
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

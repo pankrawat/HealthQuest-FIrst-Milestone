@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dph5"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph180">
+
+        <ImageView
+            android:id="@+id/chalengeimageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black_mask"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dph3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/start_time_heading"
+                    android:layout_width="@dimen/dph70"
+                    android:layout_height="@dimen/dph20"
+                    android:layout_marginTop="@dimen/dph3"
+                    android:background="@drawable/rounded_button"
+                    android:gravity="center"
+                    android:text="Start Time"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp11"
+                    app:font="regular" />
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/tv_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dph5"
+                    android:layout_marginTop="@dimen/dph5"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp10"
+                    app:font="regular" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/end_time_heading"
+                    android:layout_width="@dimen/dph70"
+                    android:layout_height="@dimen/dph20"
+                    android:layout_marginTop="@dimen/dph3"
+                    android:background="@drawable/rounded_button"
+                    android:gravity="center"
+                    android:text="End Time"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp11"
+                    app:font="regular" />
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/tv_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dph5"
+                    android:layout_marginTop="@dimen/dph5"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp10"
+                    app:font="regular" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dateTvParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:padding="@dimen/dp5"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/dateTextView"
+            android:background="@mipmap/cal" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp10"
+            android:gravity="center_horizontal"
+            android:text="Select Date"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp14"
+            android:visibility="visible"
+            app:font="regular" />
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fbfbf6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dph5"
+            android:paddingLeft="@dimen/dph20"
+            android:paddingRight="@dimen/dph20"
+            android:paddingTop="@dimen/dph5">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingRight="@dimen/dph20">
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/cheaderTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male vs Female (Day 2)"
+                    android:textColor="@color/date_hash"
+                    android:textSize="@dimen/sp16"
+                    app:font="regular" />
+
+
+                <com.tupelo.wellness.view.NewTextView
+                    android:id="@+id/cDescTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textColor="@color/date_hash"
+                    android:textSize="@dimen/sp10"
+                    app:font="light" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dph5"
+                android:padding="5dp"
+                android:src="@mipmap/check" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

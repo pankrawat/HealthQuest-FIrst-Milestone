@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><!--Text Only News Feed-->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:layout_margin="@dimen/dph3"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <com.tupelo.wellness.view.NewTextView
+
+            style="@style/captionNewsFeed"
+            android:id="@+id/feed_caption"
+            android:autoLink="web"
+            app:font="light"
+            android:layout_marginTop="@dimen/dph15"
+            android:layout_marginLeft="@dimen/dph15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+        <ImageView android:id="@+id/feed_media_url"
+            android:layout_marginTop="@dimen/dph10"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/feed_caption"
+            android:src="@drawable/pow_by_pubnub"
+            android:layout_margin="@dimen/dph3"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"/>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/dph15"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/dph15"
+            android:gravity="center_vertical"
+            android:layout_below="@+id/feed_media_url"
+            android:layout_marginTop="@dimen/dph10"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@mipmap/instagram"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content" />
+            <com.tupelo.wellness.view.NewTextView
+                android:textSize="@dimen/sp12"
+                android:layout_marginLeft="@dimen/dph5"
+                android:layout_width="wrap_content"
+                android:id="@+id/feed_user"
+                android:layout_height="wrap_content"
+                android:text="NHL" />
+            <com.tupelo.wellness.view.NewTextView
+                android:layout_marginLeft="@dimen/dph5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-" />
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/feed_timestamp"
+                android:layout_marginLeft="@dimen/dph5"
+                app:font="light"
+                style="@style/timeStampNewsFeed" />
+
+        </LinearLayout>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/dph10"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="@dimen/dph15"-->
+            <!--android:layout_marginRight="@dimen/dph10"-->
+            <!--android:layout_below="@+id/feed_media_url"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:src="@mipmap/icon"-->
+            <!--/>-->
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

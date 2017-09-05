@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.tupelo.wellness.activity.MyDevice">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:src="@mipmap/fitbit_icon"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dph50"
+        android:id="@+id/device"/>
+
+    <com.tupelo.wellness.view.NewTextView android:layout_width="wrap_content"
+        android:layout_below="@id/device"
+        android:text=""
+        app:font="light"
+        android:textSize="@dimen/sp22"
+        android:paddingLeft="@dimen/dph30"
+        android:paddingRight="@dimen/dph30"
+        android:id="@+id/selectedvalue"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_height="@dimen/dph30"
+        />
+
+    <com.tupelo.wellness.view.NewTextView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/selectedvalue"
+        android:text="9891000235"
+        android:textSize="@dimen/sp16"
+        android:paddingLeft="@dimen/dph30"
+        android:visibility="invisible"
+        android:paddingRight="@dimen/dph30"
+        app:font="light"
+        android:id="@+id/mymoserial"
+        android:gravity="center"
+        android:background="#eeeeee"
+        android:layout_centerInParent="true"
+        android:layout_height="@dimen/dph30"
+        android:layout_marginTop="@dimen/dph30"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/forwardbutton"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dph30"
+        android:textSize="@dimen/sp16"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymoserial"
+        android:src="@mipmap/forward_btn"/>
+
+
+    <com.tupelo.wellness.view.NewTextView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/forwardbutton"
+        android:text="Switch To New Device"
+        app:font="light"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp16"
+        android:layout_marginTop="@dimen/dph20"
+        />
+
+</RelativeLayout>

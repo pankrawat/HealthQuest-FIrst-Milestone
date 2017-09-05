@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:padding="@dimen/dp5"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       >
+
+        <com.tupelo.wellness.view.CircularImageView
+            android:id="@+id/photourl"
+            android:layout_width="@dimen/dph50"
+            android:layout_height="@dimen/dph50"
+            android:layout_marginLeft="@dimen/dph10"
+            android:src="@mipmap/default_user_dark" />
+        <TextView
+            android:id="@+id/channelname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/photourl"
+            android:text="ssssssssssss"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingTop="@dimen/dp10"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_below="@id/channelname"
+            android:id="@+id/des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/photourl"
+            android:text="ssssssssssss"
+            android:paddingLeft="@dimen/dp20"
+            android:textSize="@dimen/sp11"
+            android:paddingTop="@dimen/dp3"
+            android:textColor="@color/profile_hint" />
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

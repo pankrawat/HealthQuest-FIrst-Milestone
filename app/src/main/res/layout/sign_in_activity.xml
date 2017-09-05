@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+<!--    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_screen_"/>-->
+
+
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dph8"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:onClick="goToLoginOrRegister"
+            android:src="@mipmap/back_icon"
+            android:textColor="@color/white" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp17"
+            app:font="regular" />
+    </RelativeLayout>
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:paddingRight="@dimen/dph45"
+       android:paddingLeft="@dimen/dph45"
+       android:layout_height="match_parent">
+
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/program_name"
+
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dph80"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Good Steps"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp25"
+            app:font="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/usernamepassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+
+            <com.tupelo.wellness.view.NewEditText
+                android:id="@+id/et_si_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_line"
+                android:gravity="center"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/dph5"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_light"
+                android:textSize="@dimen/sp16"
+                app:font="light" />
+
+
+            <com.tupelo.wellness.view.NewEditText
+                android:id="@+id/et_si_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dph15"
+                android:background="@drawable/white_line"
+                android:gravity="center"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingBottom="@dimen/dph5"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_light"
+                android:textSize="@dimen/sp16"
+                app:font="light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/forgotnewuser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/usernamepassword"
+            android:layout_marginTop="@dimen/dph23"
+            android:orientation="horizontal">
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/txtVuForgot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Forgot Password?"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp13"
+                app:font="regular" />
+
+            <com.tupelo.wellness.view.NewTextView
+                android:id="@+id/txtVuSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:text="New User"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp13"
+                app:font="regular" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forgotnewuser"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dph28"
+            android:src="@mipmap/forward_btn" />
+   </RelativeLayout>
+</RelativeLayout>
