@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthDataObserver;
 import com.samsung.android.sdk.healthdata.HealthDataResolver;
 import com.samsung.android.sdk.healthdata.HealthDataResolver.Filter;
@@ -43,6 +44,7 @@ import com.tupelo.wellness.network.NetworkCall;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Hashtable;
 import java.util.Locale;
 
 
@@ -54,6 +56,9 @@ public class StepCountReporter {
     ArrayList<StepsBean> stepCounts, stepCountFinal;
     ArrayList<CaloriesBean> caloriesBeanArrayList;
     ArrayList<DistanceBean> distanceBeanArrayList;
+    ArrayList<FloorBean> floorBeanArrayList;
+    Boolean isfloorcount=true;
+    ArrayList<StepsBean> finalarr= new ArrayList<>();
 
     public StepCountReporter(HealthDataStore store) {
         mStore = store;
@@ -70,7 +75,11 @@ public class StepCountReporter {
     public void start(Context context) {
         this.context = context;
         HealthDataObserver.addObserver(mStore, Constants.SHEALTH_STEP_DAILY_TREND, mObserver);
-        readTodayStepCount();
+        HealthDataObserver.addObserver(mStore, HealthConstants.FloorsClimbed.HEALTH_DATA_TYPE, mObserver);
+
+        //readTodayStepCount();
+        //getFloorCount();
+        getWeeklyFloors();
     }
 
     private void readTodayStepCount() {
@@ -79,7 +88,6 @@ public class StepCountReporter {
         Filter filter = Filter.eq("source_type", -2);
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
                 .setDataType(Constants.SHEALTH_STEP_DAILY_TREND)
-
                 .setFilter(filter)
                 .setSort("day_time", HealthDataResolver.SortOrder.DESC)
                 .build();
@@ -143,6 +151,43 @@ public class StepCountReporter {
                         cal.add(Calendar.DAY_OF_YEAR, -1);
                     }
                 }
+
+
+                Calendar cal1 = Calendar.getInstance();
+                Hashtable<String,StepsBean> stepbeans= new Hashtable<>();
+                ArrayList<String> datearr= new ArrayList<>();
+
+                while (cal1.get(Calendar.DAY_OF_YEAR) >= FirstDayOfWeek.get(Calendar.DAY_OF_YEAR)) {
+
+                    datearr.add(dateFormat.format(cal1.getTime()));
+                    cal1.set(Calendar.HOUR_OF_DAY,-1);
+
+                }
+                for(int i=0;i<datearr.size();i++) {
+                    for(int j=0;j<stepCountFinal.size();j++) {
+                        if (stepCountFinal.get(j).getDate().equalsIgnoreCase(datearr.get(i).toString())) {
+                            //if(stepbeans.get(stepCountFinal.get(j).getDate()).getSteps().equals("null")) {
+                            stepbeans.put(stepCountFinal.get(j).getDate(), stepCountFinal.get(j));
+
+                            //   }
+                        } else {
+                            StepsBean bean = new StepsBean();
+                            bean.setDate(datearr.get(i).toString());
+                            bean.setSteps("0");
+                            if(!stepbeans.containsKey(bean.getDate())) {
+                                stepbeans.put(bean.getDate(), bean);
+                            }
+                        }
+
+                    }
+                }
+
+                finalarr.addAll(stepbeans.values());
+
+                for (int i=0;i<finalarr.size();i++){
+                    Log.e("Arrrayyyyy",finalarr.get(i).getDate()+"   "+finalarr.get(i).getSteps());
+                }
+
             }
             new SHealthAsync().execute();
         }
@@ -170,9 +215,14 @@ public class StepCountReporter {
 
             String imei = new Helper().getImei(context);
             String serial = "534845414c5448", apitoken = "", apitype = "1006";
-
-            new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, stepCounts,caloriesBeanArrayList,distanceBeanArrayList);
-            return null;
+                if(isfloorcount) {
+                   String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, stepCountFinal, caloriesBeanArrayList, distanceBeanArrayList,floorBeanArrayList);
+                    Log.e(StepCountReporter.class.getName(),"1"+result);
+                }else {
+                    String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, stepCountFinal, caloriesBeanArrayList, distanceBeanArrayList);
+                Log.e(StepCountReporter.class.getName(),"2"+result);
+                }
+                    return null;
         }
 
 
@@ -190,8 +240,142 @@ public class StepCountReporter {
         @Override
         public void onChange(String dataTypeName) {
             Log.d(Constants.SHEALTH_TAG, "Observer receives a data changed event");
-            readTodayStepCount();
+           // readTodayStepCount();
+            getFloorCount();
         }
     };
 
+
+    private void getFloorCount(){
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+        long endTime = System.currentTimeMillis();
+        long startTime = endTime - 24*60*60*1000;
+        HealthDataResolver.Filter filter = HealthDataResolver.Filter.and(HealthDataResolver.Filter.greaterThanEquals(HealthConstants.Exercise.START_TIME, startTime),
+                HealthDataResolver.Filter.lessThanEquals(HealthConstants.Exercise.END_TIME, endTime));
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+                .setDataType(HealthConstants.FloorsClimbed.HEALTH_DATA_TYPE)
+                .setProperties(new String[]{HealthConstants.FloorsClimbed.FLOOR})
+                .setFilter(filter)
+               // .setSort("day_time", HealthDataResolver.SortOrder.DESC)
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(mFloorListener);
+        } catch (Exception e) {
+            Log.e(Constants.SHEALTH_TAG, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(Constants.SHEALTH_TAG, "Getting Floors count fails.");
+        }
+    }
+    private final HealthResultHolder.ResultListener<ReadResult> mFloorListener = new HealthResultHolder.ResultListener<ReadResult>() {
+        @Override
+        public void onResult(ReadResult result) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Cursor c = null;
+            StepsBean stepCount;
+            CaloriesBean caloriesBean;
+            DistanceBean distanceBean;
+            FloorBean floorBean;
+            Calendar cal = Calendar.getInstance();
+            Calendar FirstDayOfWeek = Calendar.getInstance();
+            FirstDayOfWeek.add(Calendar.DAY_OF_YEAR, -6);
+
+            Log.e(Constants.SHEALTH_TAG, "Today's date: " + dateFormat.format(cal.getTime()) + " FirstDayofweek: " + dateFormat.format(FirstDayOfWeek.getTime()));
+            stepCounts = new ArrayList<>();
+            caloriesBeanArrayList=new ArrayList<>();
+            distanceBeanArrayList=new ArrayList<>();
+            try {
+                c = result.getResultCursor();
+                if (c != null) {
+                    Log.e(Constants.SHEALTH_TAG, "getCount " + c.getCount());
+                    while (c.moveToNext()) {
+                        String data = String.valueOf(c.getInt(c.getColumnIndex("floor")));
+                        Log.e("Floor data",data);
+                    }
+
+                }
+            } finally {
+                if (c != null) {
+                    c.close();
+
+                }
+            }
+            readTodayStepCount();
+           // new SHealthAsync().execute();
+        }
+    };
+
+
+
+    private void getWeeklyFloors() {
+
+        long startTime = getStartTimeOfWeek();
+        long endTime = System.currentTimeMillis();
+        floorBeanArrayList=new ArrayList<>();
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+        Log.d("TEST", "start "+startTime);
+        Log.d("TEST", "end "+endTime);
+        HealthDataResolver.Filter filter =
+                HealthDataResolver.Filter.greaterThanEquals(HealthConstants.FloorsClimbed.START_TIME, startTime)
+                        .lessThan(HealthConstants.FloorsClimbed.END_TIME, endTime);
+
+        HealthDataResolver.AggregateRequest request = new HealthDataResolver.AggregateRequest.Builder()
+                .setDataType(HealthConstants.FloorsClimbed.HEALTH_DATA_TYPE)
+                .setFilter(filter)
+                .addFunction(HealthDataResolver.AggregateRequest.AggregateFunction.SUM,
+                        HealthConstants.FloorsClimbed.FLOOR, "sum")
+                .setTimeGroup(HealthDataResolver.AggregateRequest.TimeGroupUnit.DAILY, 1,
+                        HealthConstants.FloorsClimbed.TIME_OFFSET,
+                        HealthConstants.FloorsClimbed.END_TIME, "day")
+                .build();
+
+        try {
+            resolver.aggregate(request).setResultListener(mStepAggrResult);
+        } catch (Exception e) {
+            Log.d("TEST", "Aggregating health data fails.");
+        }
+    }
+
+    private final HealthResultHolder.ResultListener<HealthDataResolver.AggregateResult> mStepAggrResult=
+            new HealthResultHolder.ResultListener<HealthDataResolver.AggregateResult>() {
+
+                @Override
+                public void onResult(HealthDataResolver.AggregateResult result) {
+// Checks the result
+                    Cursor c = result.getResultCursor();
+                     FloorBean floorBean;
+
+                    if (c != null) {
+                        Log.e(Constants.SHEALTH_TAG, "getCount " + c.getCount());
+                        if (c.getCount() > 0) {
+                            while (c.moveToNext()) {
+                                floorBean = new FloorBean();
+
+                                String day = c.getString(c.getColumnIndex("day"));
+                                String sum = c.getString(c.getColumnIndex("sum"));
+                                floorBean.setFloor(sum);
+
+                                Log.d("TEST", "sum " + sum);
+                                Log.d("TEST", "day " + day.toString());
+                                floorBeanArrayList.add(floorBean);
+                            }
+                            c.close();
+                            isfloorcount = true;
+                            readTodayStepCount();
+                        }
+                     else {
+                        isfloorcount = false;
+                        readTodayStepCount();
+                    }
+                }
+                    else {
+                        Log.d("TEST", "There is no result.");
+                    }
+                }
+            };
+
+    private long getStartTimeOfWeek() {
+        Calendar week = Calendar.getInstance();
+        week.add(Calendar.DATE, -7);
+        return week.getTimeInMillis();
+    }
 }
