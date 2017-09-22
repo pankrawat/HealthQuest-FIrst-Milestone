@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph200"
+        android:layout_margin="@dimen/dp25"
+        />
+
+    <Button
+        android:id="@+id/weight_color"
+        android:layout_marginTop="@dimen/dp40"
+        android:layout_below="@+id/graph"
+        android:layout_width="@dimen/dpw25"
+        android:layout_height="@dimen/dph19"
+        android:layout_marginLeft="@dimen/dp25"
+        android:clickable="false"/>
+    <TextView
+        android:layout_alignBottom="@+id/weight_color"
+        android:layout_toRightOf="@+id/weight_color"
+        android:text="Weight"
+        android:textColor="#000"
+        android:textSize="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp6"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+<com.tupelo.wellness.view.NewTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:layout_below="@+id/weight_color"
+    android:layout_marginTop="@dimen/dp40"
+    android:textColor="#000"
+    android:layout_marginLeft="@dimen/margin_20dp"
+    android:text="ENTER WEIGHT"/>
+
+    
+    <Button
+        android:id="@+id/add_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:textSize="@dimen/sp17"
+        android:layout_margin="@dimen/dp7"
+        android:text="ADD WEIGHT"
+        android:layout_alignParentBottom="true"
+        android:textColor="#fff"/>
+</RelativeLayout>

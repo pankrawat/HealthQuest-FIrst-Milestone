@@ -1,18 +1,27 @@
 package com.tupelo.wellness.activity;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.repacked.stringtemplate.v4.ST;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArraySet;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -28,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,13 +45,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
@@ -50,8 +60,8 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
-import com.google.android.gms.fitness.result.DailyTotalResult;
 import com.google.android.gms.fitness.result.DataReadResult;
+import com.j256.ormlite.stmt.query.In;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -82,18 +92,25 @@ import com.tupelo.wellness.jawbone.oauth.OauthUtils;
 import com.tupelo.wellness.jawbone.oauth.OauthWebViewActivity;
 import com.tupelo.wellness.network.NetworkCall;
 import com.tupelo.wellness.parcer.Jsonparser;
+import com.tupelo.wellness.view.CircleAngleAnimation;
+import com.tupelo.wellness.view.NewTextView;
+
+import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
 
 
 /**
@@ -123,11 +140,51 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private Fonts fonts;
     private float initialX;
     private boolean authInProgress = false;
-    String payload_title,payload_text,payload_type;
-    ArrayList<CaloriesBean> caloriesBeanArrayList=new ArrayList<>();
-    ArrayList<DistanceBean> distanceBeanArrayList= new ArrayList<>();
-
-
+    String payload_title, payload_text, payload_type;
+    ArrayList<CaloriesBean> caloriesBeanArrayList = new ArrayList<>();
+    ArrayList<DistanceBean> distanceBeanArrayList = new ArrayList<>();
+    private LinearLayout caloriesLayout;
+    private ImageView yesterdayCalImg;
+    private NewTextView yesterdayCal, step_label;
+    private NewTextView yesterdayCalTxt;
+    private ImageView bestCalImg;
+    private NewTextView bestCal;
+    private NewTextView bestCalTxt;
+    private ImageView totalCalImg;
+    private NewTextView totalCal;
+    private NewTextView totalCalTxt;
+    private LinearLayout distanceLayout;
+    private ImageView yesterdayDistanceImg;
+    private NewTextView yesterdayDistance;
+    private NewTextView yesterdayDistanceTxt;
+    private ImageView bestDistanceImg;
+    private NewTextView bestDistance;
+    private NewTextView bestDistanceTxt;
+    private ImageView totalDistanceImg;
+    private NewTextView totalDistance;
+    private NewTextView totalDistanceTxt;
+    private LinearLayout floorLayout, stepLayout;
+    private ImageView yesterdayFloorImg;
+    private NewTextView yesterdayFloor;
+    private NewTextView yesterdayFloorTxt;
+    private ImageView bestFloorImg;
+    private NewTextView bestFloor;
+    private NewTextView bestFloorTxt;
+    private ImageView totalFloorImg;
+    private NewTextView totalFloor;
+    private NewTextView totalFloorTxt, unit;
+    private TextView yesterday_cal_statictxt;
+    private DonutProgress ringProgressBar;
+    private ImageView left, right, img;
+    static int slide = 0;
+    private View view;
+    private GetterSetter getterSetter = new GetterSetter();
+    SharedPreferences editor;
+    Calendar cal;
+    Date now;
+    long startTime,endTime;
+    DateFormat dateFormat,timeformat;
+    DataReadRequest readdistanceRequest,readCaloriesRequest;
     private static HashMap<String, Integer> getMoveEventsListRequestParams() {
         HashMap<String, Integer> queryHashMap = new HashMap<String, Integer>();
 
@@ -144,41 +201,15 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.tab_dashboard, container, false);
+        initView(v);
         setHasOptionsMenu(false);
 
+
+
         final Transformation transformation = new RoundCornerTransformation(8, 5);
-        LinearLayout relativeTop = (LinearLayout) v.findViewById(R.id.relativeTop);
+        RelativeLayout relativeTop = (RelativeLayout) v.findViewById(R.id.relativeTop);
         relativeTop.setBackgroundColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
-/*
-        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        String check = pref.getString("check", "3");
-        payload_text = pref.getString("payload_text","");
-        payload_title = pref.getString("payload_title","");
-        payload_type = pref.getString("payload_type","");
-        if (check.equals("0")) {
-
-
-            showDialog1();
-//ano
-
-            SharedPreferences pref1 = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            SharedPreferences.Editor editor1 = pref1.edit();
-            editor1.putString("check", "34"); // Storing string
-            editor1.commit();
-        } else if (check.equals("1")) {
-            showDialog2();
-//win
-            SharedPreferences pref1 = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            SharedPreferences.Editor editor1 = pref1.edit();
-            editor1.putString("check", "34"); // Storing string
-            editor1.commit();
-        } else {
-            SharedPreferences pref1 = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            SharedPreferences.Editor editor1 = pref1.edit();
-            editor1.putString("check", "34"); // Storing string
-            editor1.commit();
-
-        }*/
+         editor= getActivity().getSharedPreferences("companyprefs",0);
 
 
         context = getActivity();
@@ -190,13 +221,14 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getString(R.string.plz_wt));
         dialog.setCancelable(true);*/
-        fonts = new Fonts(context);
+            fonts = new Fonts(context);
         sharedPreference = SharedPreference.getInstance(context);
         sharedPreference.putBoolean(Constants.IS_SIGNUP_COMPLETE, true);
         Bundle bundle = this.getArguments();
         service = bundle.getString(Constants.SERVICE);
+        left.setVisibility(View.INVISIBLE);
 
-        Log.e(TAG,"the service is 1 " + service);
+        Log.e(TAG, "the service is 1 " + service);
 
         if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_MYMO)) {
             syncDashboardFromMymo();
@@ -211,7 +243,6 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 if (CheckConnection.isConnection(context)) {
                     fitnessHelper = FitnessHelper.getInstance((TabActivity) context);
                     fitnessHelper.fitnessClientBuilder();
-
                     showProgressBar(true);
 
                 } else {
@@ -237,8 +268,281 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             ACCESS_TOKEN = getAuthToken.getACCESS_TOKEN();
             syncDashboardFromFitbit();
         }
-//        Log.d("dashboard", "created");
 
+       final Set<String> actdataset= editor.getStringSet("deviceset", new HashSet<String>());
+               // actdataset.remove("totaldistance");
+              //  actdataset.remove("active-calories");
+                // actdataset.remove("floors-climbed");
+
+        Log.d("actdatashow......", actdataset.toString());
+        //[active-calories, steps, floors-climbed, totaldistance]
+            if(actdataset.size()==1){
+                right.setVisibility(View.INVISIBLE);
+                left.setVisibility(View.INVISIBLE);
+            }
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (slide == 0) {
+                    if(actdataset.contains("active-calories")) {
+                        slide = 1;
+                        left.setVisibility(View.VISIBLE);
+
+                        caloriesLayout.setVisibility(View.VISIBLE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.GONE);
+                        img.setBackgroundResource(R.mipmap.calories);
+                        step_label.setText("CALORIES");
+                        unit.setText("");
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_calories()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                    }else if(actdataset.contains("totaldistance"))
+                    {
+                        left.setVisibility(View.VISIBLE);
+
+                        slide = 2;
+                        step_label.setText("DISTANCE");
+                        img.setBackgroundResource(R.mipmap.distance);
+                        if(editor.getString("distance","").equals("km"))
+                        {
+                            unit.setText("km");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) / 1000);
+                            tv_steps_count.setText(String.valueOf(km));
+                        }else
+                        {
+                            unit.setText("mi");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) *0.000621371);
+                            tv_steps_count.setText(String.valueOf(km));
+                        }
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.VISIBLE);
+                        floorLayout.setVisibility(View.GONE);
+                    }else if(actdataset.contains("floors-climbed")){
+                        left.setVisibility(View.VISIBLE);
+                        right.setVisibility(View.INVISIBLE);
+
+                        slide = 3;
+                        step_label.setText("FLOORS");
+                        img.setBackgroundResource(R.mipmap.stairs);
+                        unit.setText("");
+
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_floors()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.VISIBLE);
+                       // right.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        right.setVisibility(View.INVISIBLE);
+                    }
+                } else if (slide == 1) {
+                    if(actdataset.contains("totaldistance")) {
+                        left.setVisibility(View.VISIBLE);
+
+                        slide = 2;
+                        step_label.setText("DISTANCE");
+                        img.setBackgroundResource(R.mipmap.distance);
+                        if (editor.getString("distance", "").equals("km")) {
+                            unit.setText("km");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) / 1000);
+                            tv_steps_count.setText(String.valueOf(km));
+                        } else {
+                            unit.setText("mi");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) * 0.000621371);
+                            tv_steps_count.setText(String.valueOf(km));
+                        }
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.VISIBLE);
+                        floorLayout.setVisibility(View.GONE);
+                    }else if(actdataset.contains("floors-climbed"))
+                    {
+                        left.setVisibility(View.VISIBLE);
+                        right.setVisibility(View.INVISIBLE);
+
+                        slide = 3;
+                        step_label.setText("FLOORS");
+                        img.setBackgroundResource(R.mipmap.stairs);
+                        unit.setText("");
+
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_floors()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.VISIBLE);
+                        //right.setVisibility(View.INVISIBLE);
+                    } else {
+                        right.setVisibility(View.INVISIBLE);
+                    }
+                } else if (slide == 2) {
+                    left.setVisibility(View.VISIBLE);
+                    right.setVisibility(View.INVISIBLE);
+
+                    slide = 3;
+                    step_label.setText("FLOORS");
+                    img.setBackgroundResource(R.mipmap.stairs);
+                    unit.setText("");
+
+                    tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_floors()).intValue()));
+                    CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                    animation.setDuration(1000);
+                    ringProgressBar.startAnimation(animation);
+                    caloriesLayout.setVisibility(View.GONE);
+                    stepLayout.setVisibility(View.GONE);
+                    distanceLayout.setVisibility(View.GONE);
+                    floorLayout.setVisibility(View.VISIBLE);
+                    right.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        });
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //right.setVisibility(View.VISIBLE);
+
+                if (slide == 1) {
+                    right.setVisibility(View.VISIBLE);
+                    slide = 0;
+                    step_label.setText("STEPS");
+                    img.setBackgroundResource(R.mipmap.steps);
+                    unit.setText("");
+
+                    left.setVisibility(View.INVISIBLE);
+
+                    caloriesLayout.setVisibility(View.GONE);
+                    stepLayout.setVisibility(View.VISIBLE);
+                    distanceLayout.setVisibility(View.GONE);
+                    floorLayout.setVisibility(View.GONE);
+                    tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_steps()).intValue()));
+                    CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Integer.valueOf(tv_steps_count.getText().toString()));
+                    animation.setDuration(1000);
+                    ringProgressBar.startAnimation(animation);
+                } else if (slide == 2) {
+                    if(actdataset.contains("active-calories")) {
+                        right.setVisibility(View.VISIBLE);
+
+                        slide = 1;
+                        step_label.setText("CALORIES");
+                        img.setBackgroundResource(R.mipmap.calories);
+                        unit.setText(" ");
+
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_calories()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Integer.valueOf(tv_steps_count.getText().toString()));
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.VISIBLE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.GONE);
+                    }else if(actdataset.contains("steps"))
+                    {
+                        right.setVisibility(View.VISIBLE);
+
+                        slide = 0;
+                        step_label.setText("STEPS");
+                        img.setBackgroundResource(R.mipmap.steps);
+                        unit.setText("");
+
+                        // left.setVisibility(View.INVISIBLE);
+
+                        caloriesLayout.setVisibility(View.VISIBLE);
+                        stepLayout.setVisibility(View.VISIBLE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.GONE);
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_steps()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Integer.valueOf(tv_steps_count.getText().toString()));
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                    }
+
+                } else if (slide == 3) {
+                    if(actdataset.contains("totaldistance")) {
+                        right.setVisibility(View.VISIBLE);
+
+                        slide = 2;
+                        step_label.setText("DISTANCE");
+                        img.setBackgroundResource(R.mipmap.distance);
+                        SharedPreferences editor = getActivity().getSharedPreferences("companyprefs", 0);
+
+                        if (editor.getString("distance", "").equals("km")) {
+                            unit.setText("km");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) / 1000);
+                            tv_steps_count.setText(String.valueOf(km));
+                        } else {
+                            unit.setText("mi");
+                            String km = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getToday_distance()) * 0.000621371);
+                            tv_steps_count.setText(String.valueOf(km));
+                        }
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Double.valueOf(tv_steps_count.getText().toString()).intValue());
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.VISIBLE);
+                        floorLayout.setVisibility(View.GONE);
+                    } else if(actdataset.contains("active-calories"))
+                    {
+                        right.setVisibility(View.VISIBLE);
+
+                        slide = 1;
+                        step_label.setText("CALORIES");
+                        img.setBackgroundResource(R.mipmap.calories);
+                        unit.setText(" ");
+
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_calories()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Integer.valueOf(tv_steps_count.getText().toString()));
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                        caloriesLayout.setVisibility(View.VISIBLE);
+                        stepLayout.setVisibility(View.GONE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.GONE);
+                    }else if(actdataset.contains("steps"))
+                    {
+                        right.setVisibility(View.VISIBLE);
+
+                        slide = 0;
+                        step_label.setText("STEPS");
+                        img.setBackgroundResource(R.mipmap.steps);
+                        unit.setText("");
+
+                       // left.setVisibility(View.INVISIBLE);
+
+                        caloriesLayout.setVisibility(View.GONE);
+                        stepLayout.setVisibility(View.VISIBLE);
+                        distanceLayout.setVisibility(View.GONE);
+                        floorLayout.setVisibility(View.GONE);
+                        tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_steps()).intValue()));
+                        CircleAngleAnimation animation = new CircleAngleAnimation(ringProgressBar, Integer.valueOf(tv_steps_count.getText().toString()));
+                        animation.setDuration(1000);
+                        ringProgressBar.startAnimation(animation);
+                    }
+                }
+
+            }
+
+        });
         return v;
     }
 
@@ -246,7 +550,6 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     public void onStart() {
         super.onStart();
     }
-
 
 
     public void showDialog1() {
@@ -259,13 +562,12 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 .setView(promptView);
         final AlertDialog alertDialog = builder.create();
 
-        TextView title=(TextView)promptView.findViewById(R.id.congo);
+        TextView title = (TextView) promptView.findViewById(R.id.congo);
         title.setText(payload_title.toString());
 
 
-        TextView des=(TextView)promptView.findViewById(R.id.dis);
+        TextView des = (TextView) promptView.findViewById(R.id.dis);
         des.setText(payload_text.toString());
-
 
 
         LinearLayout ok = (LinearLayout) promptView.findViewById(R.id.ok);
@@ -291,9 +593,9 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 .setView(promptView);
         final AlertDialog alertDialog = builder.create();
 
-        TextView title=(TextView)promptView.findViewById(R.id.congo);
+        TextView title = (TextView) promptView.findViewById(R.id.congo);
         title.setText(payload_title.toString());
-        TextView des=(TextView)promptView.findViewById(R.id.dis);
+        TextView des = (TextView) promptView.findViewById(R.id.dis);
         des.setText(payload_text.toString());
 
         ImageView ok = (ImageView) promptView.findViewById(R.id.close);
@@ -305,18 +607,14 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         });
 
 
-
-
-
         ImageView fb = (ImageView) promptView.findViewById(R.id.fb);
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                callShareIntent(getActivity(),payload_text,payload_title);
+                callShareIntent(getActivity(), payload_text, payload_title);
             }
         });
-
 
 
         ImageView tw = (ImageView) promptView.findViewById(R.id.tw);
@@ -324,7 +622,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                callShareIntent(getActivity(),payload_text,payload_title);
+                callShareIntent(getActivity(), payload_text, payload_title);
             }
         });
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -368,14 +666,15 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
         activity.startActivity(Intent.createChooser(sharingIntent, "Refer Friend via"));
     }
+
     private void syncDashboardFromFitbit() {
 
-        Log.e(TAG,"sync db fitbit inside");
+        Log.e(TAG, "sync db fitbit inside");
         //Calendar calendar = Calendar.getInstance();
         //String date = calendar.get(Calendar.YEAR) + "-" + String.format("%02d", calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
         if (CheckConnection.isConnection(context)) {
-            new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_FITBIT, "https://api.fitbit.com/1/user/"+USER_ID+"/activities/tracker/steps/date/today/7d.json",USER_ID ,TOKEN_TYPE, ACCESS_TOKEN);
-            getInfoStreamData();
+            new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_FITBIT, "https://api.fitbit.com/1/user/" + USER_ID + "/activities/tracker/steps/date/today/7d.json", USER_ID, TOKEN_TYPE, ACCESS_TOKEN);
+           // getInfoStreamData();
             //new InfoStreamAsync(context).execute();
         } else {
 
@@ -387,7 +686,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private void syncDashboardFromMymo() {
         if (CheckConnection.isConnection(context)) {
             new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_MYMO);
-            getInfoStreamData();
+          ///  getInfoStreamData();
             //new InfoStreamAsync(context).execute();
         } else {
 
@@ -399,7 +698,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private void syncDashboardFromGarmin() {
         if (CheckConnection.isConnection(context)) {
             new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_GARMIN);
-            getInfoStreamData();
+          //  getInfoStreamData();
             //new InfoStreamAsync(context).execute();
         } else {
 
@@ -410,10 +709,10 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
     public void syncDashboardFromPado() {
         if (CheckConnection.isConnection(context)) {
-            new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_PEDOMETER);
-           // fitnessHelper.getdata();
+            new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_MYMO);
+            // fitnessHelper.getdata();
 
-            getInfoStreamData();
+          //  getInfoStreamData();
             //new InfoStreamAsync(context).execute();
         } else {
 
@@ -426,7 +725,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         if (CheckConnection.isConnection(context)) {
             new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_JAWBONE, jsonString);
 
-            getInfoStreamData();
+          //  getInfoStreamData();
             // new InfoStreamAsync(context).execute();
         } else {
 
@@ -439,7 +738,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         if (CheckConnection.isConnection(context)) {
             new FitbitTupeloAsync(context).execute(DbAdapter.TABLE_NAME_SHEALTH);
 
-            getInfoStreamData();
+           // getInfoStreamData();
         } else {
 
             swipeRefreshLayout.setRefreshing(false);
@@ -448,7 +747,20 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void initViews() {
+        step_label = (NewTextView) v.findViewById(R.id.steps_label);
+        left = (ImageView) v.findViewById(R.id.left);
+        right = (ImageView) v.findViewById(R.id.right);
+        ringProgressBar = (DonutProgress) v.findViewById(R.id.ringbar);
         tv_steps_count = (TextView) v.findViewById(R.id.tv_steps_count);
+        stepLayout = (LinearLayout) v.findViewById(R.id.linearLayout2);
+        ColorFilter filter = new PorterDuffColorFilter(Color.parseColor(AppTheme.getInstance().colorPrimary), PorterDuff.Mode.SRC_OUT);
+
+        ImageView step_yesterday = (ImageView) v.findViewById(R.id.iv_yesterday);
+        ImageView best_single_steps = (ImageView) v.findViewById(R.id.iv_best_single);
+        ImageView total_steps = (ImageView) v.findViewById(R.id.iv_total_steps);
+        step_yesterday.setColorFilter(filter);
+        best_single_steps.setColorFilter(filter);
+        total_steps.setColorFilter(filter);
         //  tv_steps_count.setTypeface(fonts.getTypefaceNormal());
 
         //  tv_steps_count.setTypeface(fonts.getTypefaceNormal());
@@ -457,19 +769,24 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         //  tv_yesterday.setTypeface(fonts.getTypefaceBold());
 
         tv_best_single = (TextView) v.findViewById(R.id.tv_best_single);
+
         //  tv_best_single.setTypeface(fonts.getTypefaceBold());
 
         tv_total = (TextView) v.findViewById(R.id.tv_total);
+
         //  tv_total.setTypeface(fonts.getTypefaceBold());
 
         tv_yesterday_steps = (TextView) v.findViewById(R.id.tv_yesterday_steps);
         //  tv_yesterday_steps.setTypeface(fonts.getTypefaceLite());
+        tv_yesterday_steps.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
 
         tv_best_steps = (TextView) v.findViewById(R.id.tv_best_steps);
         // tv_best_steps.setTypeface(fonts.getTypefaceLite());
+        tv_best_steps.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
 
         tv_total_steps = (TextView) v.findViewById(R.id.tv_total_steps);
         //  tv_total_steps.setTypeface(fonts.getTypefaceLite());
+        tv_total_steps.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
 
         cFlipper = (CFlipper) v.findViewById(R.id.flipper);
         cFlipper.setOnTouchListener(new View.OnTouchListener() {
@@ -497,6 +814,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     public void getPadometerSteps() {
+        pDialog.show();
         long startTime, endTime;
         Calendar calendar = Calendar.getInstance();
         endTime = calendar.getTimeInMillis();
@@ -544,11 +862,62 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     public void setDataToList(GetterSetter getterSetter) {
+        this.getterSetter = getterSetter;
+        if (slide == 0) {
+
+
+            ringProgressBar.setMax(Integer.valueOf(getterSetter.getTotal_steps()));
+            ringProgressBar.setProgress(Integer.valueOf(getterSetter.getToday_steps()));
+            tv_steps_count.setText(getterSetter.getToday_steps());
+
+        } else if (slide == 1) {
+            ringProgressBar.setMax(Double.valueOf(getterSetter.getTotal_calories()).intValue());
+            ringProgressBar.setProgress(Double.valueOf(getterSetter.getToday_calories()).intValue());
+            tv_steps_count.setText(String.valueOf(Double.valueOf(getterSetter.getToday_calories()).intValue()));
+        } else if (slide == 2) {
+            ringProgressBar.setMax(Double.valueOf(getterSetter.getTotal_distance()).intValue());
+            ringProgressBar.setProgress(Double.valueOf(getterSetter.getToday_distance()).intValue());
+            tv_steps_count.setText(String.valueOf(Integer.valueOf(getterSetter.getToday_distance())));
+        } else if (slide == 3) {
+            ringProgressBar.setMax(Integer.valueOf(getterSetter.getTotal_floors()));
+            ringProgressBar.setProgress(Integer.valueOf(getterSetter.getToday_floors()));
+            tv_steps_count.setText(getterSetter.getToday_floors());
+        }
         swipeRefreshLayout.setRefreshing(true);
-        tv_steps_count.setText(getterSetter.getToday_steps());
         tv_yesterday_steps.setText(getterSetter.getYesterday_steps());
         tv_best_steps.setText(getterSetter.getBest_single());
         tv_total_steps.setText(getterSetter.getTotal_steps());
+        SharedPreferences editor= getActivity().getSharedPreferences("companyprefs",0);
+
+        if(editor.getString("distance","").equals("km"))
+        {
+            String ydistance = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getYesterday_distance()) / 1000);
+            String bdistance = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getBest_single_distance()) / 1000);
+            String tdistance = new DecimalFormat("#").format(Double.valueOf(getterSetter.getTotal_distance()) / 1000);
+
+            yesterdayDistance.setText(ydistance);
+            bestDistance.setText(bdistance);
+            totalDistance.setText(tdistance);
+        }else
+        {
+            String ydistance = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getYesterday_distance()) *0.000621371);
+            String bdistance = new DecimalFormat("#.##").format(Double.valueOf(getterSetter.getBest_single_distance())*0.000621371);
+            String tdistance = new DecimalFormat("#").format(Double.valueOf(getterSetter.getTotal_distance()) *0.000621371);
+
+            yesterdayDistance.setText(ydistance);
+            bestDistance.setText(bdistance);
+            totalDistance.setText(tdistance);
+        }
+        yesterdayCal.setText(String.valueOf(Double.valueOf(getterSetter.getYesterday_calories()).intValue()));
+        bestCal.setText(String.valueOf(Double.valueOf(getterSetter.getBest_single_calories()).intValue()));
+        totalCal.setText(String.valueOf(Double.valueOf(getterSetter.getTotal_calories()).intValue()));
+
+
+
+        yesterdayFloor.setText(getterSetter.getYesterday_floors());
+        bestFloor.setText(getterSetter.getBest_single_floors());
+        totalFloor.setText(getterSetter.getTotal_floors());
+
 
         tv_steps_count.setTypeface(fonts.getTypefaceBold());
         tv_yesterday_steps.setTypeface(fonts.getTypefaceNormal());
@@ -557,6 +926,66 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
         if (swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    private void initView(View v) {
+        yesterday_cal_statictxt=(TextView)v.findViewById(R.id.yesterday_cal_statictxt);
+        img = (ImageView) v.findViewById(R.id.img);
+        unit = (NewTextView) v.findViewById(R.id.unit);
+        caloriesLayout = (LinearLayout) v.findViewById(R.id.calories_layout);
+        yesterdayCalImg = (ImageView) v.findViewById(R.id.yesterday_cal_img);
+        ColorFilter filter = new PorterDuffColorFilter(Color.parseColor(AppTheme.getInstance().colorPrimary), PorterDuff.Mode.SRC_OUT);
+        yesterdayCalImg.setColorFilter(filter);
+        yesterdayCal = (NewTextView) v.findViewById(R.id.yesterday_cal);
+        yesterdayCal.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        yesterday_cal_statictxt.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        yesterdayCalTxt = (NewTextView) v.findViewById(R.id.yesterday_cal_txt);
+        bestCalImg = (ImageView) v.findViewById(R.id.best_cal_img);
+        bestCalImg.setColorFilter(filter);
+        bestCal = (NewTextView) v.findViewById(R.id.best_cal);
+        bestCal.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        bestCalTxt = (NewTextView) v.findViewById(R.id.best_cal_txt);
+        totalCalImg = (ImageView) v.findViewById(R.id.total_cal_img);
+        totalCalImg.setColorFilter(filter);
+        totalCal = (NewTextView) v.findViewById(R.id.total_cal);
+        totalCal.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        totalCalTxt = (NewTextView) v.findViewById(R.id.total_cal_txt);
+        distanceLayout = (LinearLayout) v.findViewById(R.id.distance_layout);
+        yesterdayDistanceImg = (ImageView) v.findViewById(R.id.yesterday_distance_img);
+        yesterdayDistanceImg.setColorFilter(filter);
+        yesterdayDistance = (NewTextView) v.findViewById(R.id.yesterday_distance);
+        yesterdayDistance.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        yesterdayDistanceTxt = (NewTextView) v.findViewById(R.id.yesterday_distance_txt);
+        bestDistanceImg = (ImageView) v.findViewById(R.id.best_distance_img);
+        bestDistanceImg.setColorFilter(filter);
+        bestDistance = (NewTextView) v.findViewById(R.id.best_distance);
+        bestDistance.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        bestDistanceTxt = (NewTextView) v.findViewById(R.id.best_distance_txt);
+        totalDistanceImg = (ImageView) v.findViewById(R.id.total_distance_img);
+        totalDistanceImg.setColorFilter(filter);
+        totalDistance = (NewTextView) v.findViewById(R.id.total_distance);
+        totalDistance.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        totalDistanceTxt = (NewTextView) v.findViewById(R.id.total_distance_txt);
+        floorLayout = (LinearLayout) v.findViewById(R.id.floor_layout);
+        yesterdayFloorImg = (ImageView) v.findViewById(R.id.yesterday_floor_img);
+        yesterdayFloorImg.setColorFilter(filter);
+        yesterdayFloor = (NewTextView) v.findViewById(R.id.yesterday_floor);
+        yesterdayFloor.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        yesterdayFloorTxt = (NewTextView) v.findViewById(R.id.yesterday_floor_txt);
+        bestFloorImg = (ImageView) v.findViewById(R.id.best_floor_img);
+        bestFloorImg.setColorFilter(filter);
+        bestFloor = (NewTextView) v.findViewById(R.id.best_floor);
+        bestFloor.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+        bestFloorTxt = (NewTextView) v.findViewById(R.id.best_floor_txt);
+        totalFloorImg = (ImageView) v.findViewById(R.id.total_floor_img);
+        totalFloorImg.setColorFilter(filter);
+        totalFloor = (NewTextView) v.findViewById(R.id.total_floor);
+        totalFloor.setTextColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
+
+        totalFloorTxt = (NewTextView) v.findViewById(R.id.total_floor_txt);
+        view = (View) v.findViewById(R.id.view);
+        view.setBackgroundColor(Color.parseColor(AppTheme.getInstance().colorPrimary));
     }
 
     public void showError() {
@@ -583,10 +1012,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 setTextViewHTML(tv_message, arrayList.get(i).getMessage());
 
                 final ImageView img = (ImageView) relativeLayout.findViewById(R.id.img);
-
                 img.setImageResource(R.mipmap.default_img);
-
-
                 String imagePaths = arrayList.get(i).getPhotourl();
                 if (!(imagePaths == null || imagePaths.equals(""))) {
                     Ion.with(img)
@@ -632,13 +1058,13 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             swipeRefreshLayout.setRefreshing(true);
             isRefresh = true;
 
-            Log.e(TAG,"the service is " + service);
+            Log.e(TAG, "the service is " + service);
             if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_MYMO)) {
                 syncDashboardFromMymo();
-            } else  if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_GARMIN)) {
+            } else if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_GARMIN)) {
                 syncDashboardFromGarmin();
             } else if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_FITBIT)) {
-                Log.e(TAG,"inside fitbit");
+                Log.e(TAG, "inside fitbit");
                 syncDashboardFromFitbit();
             } else if (service.equalsIgnoreCase(DbAdapter.TABLE_NAME_JAWBONE)) {
                 IonJawbone();
@@ -649,8 +1075,8 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                     if (CheckConnection.isConnection(context)) {
                         fitnessHelper = FitnessHelper.getInstance((TabActivity) context);
                         fitnessHelper.fitnessClientBuilder();
-
-                        getInfoStreamData();
+                        showProgressBar(true);
+                      //  getInfoStreamData();
                         //new InfoStreamAsync(context).execute();
                     } else {
                         swipeRefreshLayout.setRefreshing(false);
@@ -665,6 +1091,8 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                     ((TabActivity) context).finish();
                 }
             }
+            getInfoStreamData();
+
         } else {
             new Helper().showNoInternetToast(context);
             swipeRefreshLayout.setRefreshing(false);
@@ -896,79 +1324,81 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     public void getInfoStreamData() {
+        pDialog.hide();
+        if (CheckConnection.isConnection(getActivity())) {
 
-        pDialog.show();
-        StringRequest postRequest = new StringRequest(Request.Method.POST, Constants.BASE_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        pDialog.hide();
-                        Log.e(TAG, "Response is " + response);
-
-                        if (!response.equals("Connection Timeout")) {
-//            Log.d("info response", response);
-
-                            Jsonparser jsonparser = new Jsonparser(response);
-                            if (jsonparser.getErrorMsg()) {
-                                ArrayList<InfoStreamBean> arrayList = jsonparser.getInfoStream();
-                                ((TabActivity) context).setDashboardCanvas(arrayList);
-                            }
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("ERROR", "error 3=> " + error.getMessage());
-                        pDialog.hide();
-                        Toast.makeText(getActivity(), R.string.network_not_connected, Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-        ) {
-            // this is the relevant method
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.BASE_URL, new Response.Listener<String>() {
             @Override
-            protected Map<String, String> getParams() {
+            public void onResponse(String response) {
+                Log.e("daily goal", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("#error")) {
+                        JSONObject object = jsonObject.getJSONObject("#data");
+                        JSONObject dailygoal = object.getJSONObject("dailygoal");
+                        SharedPreferences.Editor mygoals = getActivity().getSharedPreferences("MyGoals", Context.MODE_PRIVATE).edit();
+                        mygoals.putString("steps", dailygoal.getString("steps"));
+                        mygoals.putString("calories", dailygoal.getString("calories"));
+                        mygoals.putString("distance", dailygoal.getString("distance"));
+                        mygoals.putString("floors", String.valueOf(dailygoal.getInt("floors")));
+                        mygoals.commit();
+                    } else {
+                        Toast.makeText(getActivity(), "Some Went Wrong, Please Try Again!!", Toast.LENGTH_SHORT).show();
 
-                DbAdapter dbAdapter = DbAdapter.getInstance(context);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pDialog.dismiss();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                DbAdapter dbAdapter = DbAdapter.getInstance(getActivity());
                 Cursor cursor = dbAdapter.fetchQuery(DbAdapter.TABLE_NAME_TUPELO);
-
                 String sessionId = "", userId = "", corpId = "";
                 if (cursor.getCount() > 0) {
                     sessionId = cursor.getString(0);
                     userId = cursor.getString(1);
                     corpId = cursor.getString(3);
                 }
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("method", "userV2.get_usergoal");
+                Helper helper = new Helper();
+                String time_stamp = helper.getUnixTimestamp();
+                map.put("hash", helper.getHashValue(Constants.API_KEY, Constants.DOMAIN, time_stamp, "userV2.get_usergoal"));
+                map.put("domain_name", Constants.DOMAIN);
+                map.put("domain_time_stamp", time_stamp);
+                map.put("nonce", time_stamp);
+                map.put("sessid", sessionId);
+                map.put("userid", userId);
+                map.put("corpid", corpId);
+//
+//
+                Log.e("Param", "params are " + map.toString());
 
-                Calendar calendar = Calendar.getInstance();
-                String date = calendar.get(Calendar.YEAR) + "-" + String.format("%02d", (calendar.get(Calendar.MONTH) + 1)) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-
-
-                Map<String, String> params = new HashMap<String, String>();
-                String method = "corpchallenge.getchallengestream";
-
-                params.clear();
-                params.put("method", method);
-                params.put("sessid", sessionId);
-                params.put("userid", userId);
-                params.put("corpid", corpId);
-                params.put("date", date);
-
-
-                params = new Helper().addRequiredParams(params, method);
-
-                Log.e(TAG, "params are " + params.toString());
-                return params;
-
-
+                return map;
             }
         };
+        AppController.getInstance().addToRequestQueue(stringRequest);
 
-        AppController.getInstance().addToRequestQueue(postRequest);
+    }else
+
+    {
+        Toast.makeText(getActivity(), "Some Network Error Occured, Please Try Again!!", Toast.LENGTH_SHORT).show();
+
+    }
 
 
     }
+
+
+
 
     public class PadometerAsync extends AsyncTask<Long, Void, Void> {
         String sessionId, userId;
@@ -976,7 +1406,7 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //showProgressBar(true);
+            showProgressBar(true);
         }
 
         @Override
@@ -994,22 +1424,10 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             //String serial = "7065646f6d657465720d0a", apitoken = "", apitype = "1003";
             String serial = "676f6f676c65666974", apitoken = "", apitype = "1003";
 
-//            Float total_calories = 0.00f;
-//            PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(fitnessHelper.fitnessClient, DataType.TYPE_CALORIES_EXPENDED);
-//            DailyTotalResult totalResult = result.await(30, TimeUnit.SECONDS);
-//            if (totalResult.getStatus().isSuccess()) {
-//                DataSet totalSet = totalResult.getTotal();
-//                if (totalSet != null) {
-//                    total_calories = totalSet.isEmpty()
-//                            ? 0
-//                            : totalSet.getDataPoints().get(0).getValue(Field.FIELD_CALORIES).asFloat();
-//                }
-//            } else {
-//                Log.w(TAG, "There was a problem getting the calories.");
-//            }
-            String response=new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, padoSteps,caloriesBeanArrayList,distanceBeanArrayList);
 
-            Log.d("Google fit data add to mymoserver",response);
+            String response = new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, padoSteps, caloriesBeanArrayList, distanceBeanArrayList);
+
+            Log.d("Google fit data add to mymoserver", response);
             return null;
         }
 
@@ -1019,6 +1437,8 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             super.onPostExecute(aVoid);
             syncDashboardFromPado();
             showProgressBar(false);
+            pDialog.hide();
+            Log.d("Dashboard", "On progress Dashboard");
 
         }
     }
@@ -1035,88 +1455,109 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         @Override
         protected Void doInBackground(Long... params) {
 
-           // caloriesBeanArrayList = fitnessHelper.getdata();
+            // caloriesBeanArrayList = fitnessHelper.getdata();
 
-            Calendar cal = Calendar.getInstance();
-            Date now = new Date();
-            cal.setTime(now);
-            long endTime = cal.getTimeInMillis();
-            cal.add(Calendar.WEEK_OF_YEAR, -1);
-            long startTime = cal.getTimeInMillis();
+            final long startTime, endTime;
+            Calendar calendar = Calendar.getInstance();
+            endTime = calendar.getTimeInMillis();
+            calendar.add(Calendar.DAY_OF_YEAR, -6);
+            calendar.add(Calendar.HOUR_OF_DAY, -(calendar.get(Calendar.HOUR_OF_DAY)));
+            calendar.add(Calendar.MINUTE, -(calendar.get(Calendar.MINUTE)));
+            calendar.add(Calendar.SECOND, -(calendar.get(Calendar.SECOND)));
+            startTime = calendar.getTimeInMillis();
 
             final java.text.DateFormat dateFormat = DateFormat.getDateInstance();
+            final java.text.DateFormat timeformat = DateFormat.getTimeInstance();
             Log.e("History", "Range Start: " + dateFormat.format(startTime));
             Log.e("History", "Range End: " + dateFormat.format(endTime));
-            DataReadRequest readRequest = new DataReadRequest.Builder()
+            DataReadRequest readdistanceRequest = new DataReadRequest.Builder()
                     .aggregate(DataType.TYPE_DISTANCE_DELTA, DataType.AGGREGATE_DISTANCE_DELTA)
                     .bucketByTime(1, TimeUnit.DAYS)
                     .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
                     .build();
 
+                    Fitness.HistoryApi.readData(fitnessHelper.fitnessClient, readdistanceRequest).setResultCallback(new ResultCallback<DataReadResult>() {
+                        @Override
+                        public void onResult(DataReadResult dataReadResult) {
+                            if (dataReadResult.getBuckets().size() > 0) {
+                                Log.e("DataSet.size(): ",
+                                        "" + dataReadResult.getBuckets().size());
+                                for (Bucket bucket : dataReadResult.getBuckets()) {
+                                    List<DataSet> dataSets = bucket.getDataSets();
+                                    for (DataSet dataSet : dataSets) {
+                                        Log.e("dataSet.dataType: ", "" + dataSet.getDataType().getName());
+                                        if (!dataSet.getDataPoints().isEmpty()) {
+                                            for (DataPoint dp : dataSet.getDataPoints()) {
+                                                Log.e("first date", dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
 
+                                                DistanceBean distanceBean = new DistanceBean();
+                                                String field_value = "";
 
-            Fitness.HistoryApi.readData(FitnessHelper.fitnessClient, readRequest).setResultCallback(new ResultCallback<DataReadResult>() {
-                @Override
-                public void onResult(DataReadResult dataReadResult) {
-                    if (dataReadResult.getBuckets().size() > 0) {
-                        Log.e("DataSet.size(): ",
-                                ""+dataReadResult.getBuckets().size());
-                        for (Bucket bucket : dataReadResult.getBuckets()) {
-                            List<DataSet> dataSets = bucket.getDataSets();
-                            for (DataSet dataSet : dataSets) {
-                                Log.e("dataSet.dataType: ","" + dataSet.getDataType().getName());
+                                                String msg = "dataPoint: "
+                                                        + "type: " + dp.getDataType().getName() + "\n"
+                                                        + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
+                                                        + ", fields: [";
 
-                                for (DataPoint dp : dataSet.getDataPoints()) {
+                                                for (Field field : dp.getDataType().getFields()) {
+                                                    msg += field.getName() + "=" + dp.getValue(field) + " ";
+                                                    field_value = "" + dp.getValue(field);
 
-                                    DistanceBean distanceBean= new DistanceBean();
-                                    String field_value="";
+                                                }
+                                                distanceBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
+                                                distanceBean.setDistance(field_value);
+                                                distanceBeanArrayList.add(distanceBean);
+                                                msg += "]";
+                                                Log.e("msggggggggggg ,......", msg);
+                                            }
+                                            Log.e("msggggggggggg ,......", "secondd");
 
-                                    String msg = "dataPoint: "
-                                            + "type: " + dp.getDataType().getName() +"\n"
-                                            + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
-                                            + ", fields: [";
+                                        } else {
+                                            Log.e("else part","elseeeee");
+                                            DistanceBean distanceBean = new DistanceBean();
+                                            distanceBean.setDistance("0");
+                                            distanceBeanArrayList.add(distanceBean);
 
-                                    for(Field field : dp.getDataType().getFields()) {
-                                        msg += field.getName() + "=" + dp.getValue(field) + " ";
+                                        }
                                     }
-                                    distanceBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-                                    distanceBean.setDistance(field_value);
-                                    distanceBeanArrayList.add(distanceBean);
-                                    msg += "]";
-                                    Log.e("msggggggggggg ,......",msg);
+                                }
+                            } else if (dataReadResult.getDataSets().size() > 0) {
+                                Log.e("dataSet.size(): ", "" + dataReadResult.getDataSets().size());
+                                for (DataSet dataSet : dataReadResult.getDataSets()) {
+                                    Log.e("dataType: ", "" + dataSet.getDataType().getName());
+
+                                    for (DataPoint dp : dataSet.getDataPoints()) {
+                                        DistanceBean distanceBean = new DistanceBean();
+                                        String field_value = "";
+
+                                        String msg = "dataPoint: "
+                                                + "type: " + dp.getDataType().getName() + "\n"
+                                                + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
+                                                + ", fields: [";
+
+                                        for (Field field : dp.getDataType().getFields()) {
+                                            msg += field.getName() + "=" + dp.getValue(field) + " ";
+                                            field_value = "" + dp.getValue(field);
+
+                                        }
+                                        distanceBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
+                                        distanceBean.setDistance(field_value);
+                                        distanceBeanArrayList.add(distanceBean);
+
+                                        msg += "]";
+                                        Log.e("msggggggggggg ,......", msg);
+                                    }
                                 }
                             }
+
                         }
-                    } else if (dataReadResult.getDataSets().size() > 0) {
-                        Log.e("dataSet.size(): " ,""+ dataReadResult.getDataSets().size());
-                        for (DataSet dataSet : dataReadResult.getDataSets()) {
-                            Log.e("dataType: ","" + dataSet.getDataType().getName());
-
-                            for (DataPoint dp : dataSet.getDataPoints()) {
-                                DistanceBean distanceBean= new DistanceBean();
-                                String field_value="";
-
-                                String msg = "dataPoint: "
-                                        + "type: " + dp.getDataType().getName() +"\n"
-                                        + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
-                                        + ", fields: [";
-
-                                for(Field field : dp.getDataType().getFields()) {
-                                    msg += field.getName() + "=" + dp.getValue(field) + " ";
-                                }
-                                distanceBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-                                distanceBean.setDistance(field_value);
-                                distanceBeanArrayList.add(distanceBean);
-
-                                msg += "]";
-                                Log.e("msggggggggggg ,......",msg);                            }
-                        }
-                    }
+                    });
+            getActivity().runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    new PadometerCaloriesAsync().execute();
 
                 }
             });
-
-
 
             return null;
         }
@@ -1125,7 +1566,9 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new PadometerCaloriesAsync().execute();
+
+
+                //new PadometerCaloriesAsync().execute();
             //showProgressBar(false);
 
         }
@@ -1138,58 +1581,70 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
         protected void onPreExecute() {
             super.onPreExecute();
 
-           // showProgressBar(false);
+            // showProgressBar(false);
         }
 
         @Override
         protected ArrayList<CaloriesBean> doInBackground(Long... params) {
-            Calendar cal = Calendar.getInstance();
-            Date now = new Date();
-            cal.setTime(now);
-            long endTime = cal.getTimeInMillis();
-            cal.add(Calendar.WEEK_OF_YEAR, -1);
-            long startTime = cal.getTimeInMillis();
+            final long startTime, endTime;
+            Calendar calendar = Calendar.getInstance();
+            endTime = calendar.getTimeInMillis();
+            calendar.add(Calendar.DAY_OF_YEAR, -6);
+            calendar.add(Calendar.HOUR_OF_DAY, -(calendar.get(Calendar.HOUR_OF_DAY)));
+            calendar.add(Calendar.MINUTE, -(calendar.get(Calendar.MINUTE)));
+            calendar.add(Calendar.SECOND, -(calendar.get(Calendar.SECOND)));
+            startTime = calendar.getTimeInMillis();
+            dateFormat = DateFormat.getDateInstance();
+            timeformat = DateFormat.getTimeInstance();
 
-            final java.text.DateFormat dateFormat = DateFormat.getDateInstance();
+
+
+
             Log.e("History", "Range Start: " + dateFormat.format(startTime));
             Log.e("History", "Range End: " + dateFormat.format(endTime));
-            DataReadRequest readRequest = new DataReadRequest.Builder()
+
+            readCaloriesRequest = new DataReadRequest.Builder()
                     .aggregate(DataType.TYPE_CALORIES_EXPENDED, DataType.AGGREGATE_CALORIES_EXPENDED)
                     .bucketByTime(1, TimeUnit.DAYS)
                     .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
                     .build();
 
-
-
-            Fitness.HistoryApi.readData(FitnessHelper.fitnessClient, readRequest).setResultCallback(new ResultCallback<DataReadResult>() {
+            Fitness.HistoryApi.readData(FitnessHelper.fitnessClient, readCaloriesRequest).setResultCallback(new ResultCallback<DataReadResult>() {
                 @Override
                 public void onResult(DataReadResult dataReadResult) {
                     if (dataReadResult.getBuckets().size() > 0) {
                         Log.e("DataSet.size(): ",
-                                ""+dataReadResult.getBuckets().size());
+                                "" + dataReadResult.getBuckets().size());
                         for (Bucket bucket : dataReadResult.getBuckets()) {
                             List<DataSet> dataSets = bucket.getDataSets();
-                            for (DataSet dataSet : dataSets) {
-                                Log.e("dataSet.dataType: ","" + dataSet.getDataType().getName());
 
-                                for (DataPoint dp : dataSet.getDataPoints()) {
-                                    CaloriesBean stepsBean= new CaloriesBean();
-                                    String field_value="";
-                                    String msg = "dataPoint: "
-                                            + "type: " + dp.getDataType().getName() +"\n"
-                                            + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
-                                            + ", fields: [";
-
-                                    for(Field field : dp.getDataType().getFields()) {
-                                        msg += field.getName() + "=" + dp.getValue(field) + " ";
-                                        field_value=""+dp.getValue(field);
+                                for (DataSet dataSet : dataSets) {
+                                    Log.e("dataSet.dataType: ", "" + dataSet.getDataType().getName());
+                                    if (!dataSet.getDataPoints().isEmpty()) {
+                                        for (DataPoint dp : dataSet.getDataPoints()) {
+                                            Log.e("first date", dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
+                                            CaloriesBean stepsBean = new CaloriesBean();
+                                            String field_value = "";
+                                            String msg = "dataPoint: "
+                                                    + "type: " + dp.getDataType().getName() + "\n"
+                                                    + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
+                                                    + ", fields: [";
+                                            for (Field field : dp.getDataType().getFields()) {
+                                                msg += field.getName() + "=" + dp.getValue(field) + " ";
+                                                field_value = "" + dp.getValue(field);
+                                            }
+                                            stepsBean.setDate(dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
+                                            stepsBean.setSteps(field_value);
+                                            caloriesBeanArrayList.add(stepsBean);
+                                            msg += "]";
+                                            Log.e("msggggggggggg ,......", msg);
+                                        }
+                                    } else {
+                                        CaloriesBean stepsBean = new CaloriesBean();
+                                        stepsBean.setSteps("0");
+                                        caloriesBeanArrayList.add(stepsBean);
                                     }
-                                    stepsBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-                                    stepsBean.setSteps(field_value);
-                                    caloriesBeanArrayList.add(stepsBean);
-                                    msg += "]";
-                                    Log.e("msggggggggggg ,......",msg);                                }
-                            }
+                                }
                         }
                     } else if (dataReadResult.getDataSets().size() > 0) {
                         Log.e("DataSet.size(): ",
@@ -1197,25 +1652,31 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
                         for (Bucket bucket : dataReadResult.getBuckets()) {
                             List<DataSet> dataSets = bucket.getDataSets();
                             for (DataSet dataSet : dataSets) {
-                                Log.e("dataSet.dataType: ", "" + dataSet.getDataType().getName());
+                               // Log.e("dataSet.dataType: ", "" + dataSet.getDataType().getName());
+                                if (!dataSet.getDataPoints().isEmpty()) {
 
-                                for (DataPoint dp : dataSet.getDataPoints()) {
-                                    CaloriesBean stepsBean = new CaloriesBean();
-                                    String field_value = "";
-                                    String msg = "dataPoint: "
-                                            + "type: " + dp.getDataType().getName() + "\n"
-                                            + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
-                                            + ", fields: [";
-
-                                    for (Field field : dp.getDataType().getFields()) {
-                                        msg += field.getName() + "=" + dp.getValue(field) + " ";
-                                        field_value = "" + dp.getValue(field);
+                                    for (DataPoint dp : dataSet.getDataPoints()) {
+                                        CaloriesBean stepsBean = new CaloriesBean();
+                                        String field_value = "";
+                                        String msg = "dataPoint: "
+                                                + "type: " + dp.getDataType().getName() + "\n"
+                                                + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getStartTime(TimeUnit.MILLISECONDS)) + "-" + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + timeformat.format(dp.getEndTime(TimeUnit.MILLISECONDS)) + "]\n"
+                                                + ", fields: [";
+                                        for (Field field : dp.getDataType().getFields()) {
+                                            msg += field.getName() + "=" + dp.getValue(field) + " ";
+                                            field_value = "" + dp.getValue(field);
+                                        }
+                                        stepsBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
+                                        stepsBean.setSteps(field_value);
+                                        caloriesBeanArrayList.add(stepsBean);
+                                        msg += "]";
+                                        Log.e("msggggggggggg ,......", msg);
                                     }
-                                    stepsBean.setDate(dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
-                                    stepsBean.setSteps(field_value);
+                                }else{
+                                    CaloriesBean stepsBean = new CaloriesBean();
+
+                                    stepsBean.setSteps("0");
                                     caloriesBeanArrayList.add(stepsBean);
-                                    msg += "]";
-                                    Log.e("msggggggggggg ,......", msg);
                                 }
                             }
                         }
@@ -1223,15 +1684,16 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
                 }
             });
-            return caloriesBeanArrayList;
+            return null;
         }
 
 
         @Override
         protected void onPostExecute(ArrayList<CaloriesBean> aVoid) {
             super.onPostExecute(aVoid);
-            caloriesBeanArrayList=aVoid;
-           final long startTime, endTime;
+            Log.e("Dashboard","Onpostexcute Calories");
+           // caloriesBeanArrayList = aVoid;
+            final long startTime, endTime;
             Calendar calendar = Calendar.getInstance();
             endTime = calendar.getTimeInMillis();
             calendar.add(Calendar.DAY_OF_YEAR, -6);
@@ -1240,26 +1702,28 @@ public class Dashboard extends Fragment implements SwipeRefreshLayout.OnRefreshL
             calendar.add(Calendar.SECOND, -(calendar.get(Calendar.SECOND)));
             startTime = calendar.getTimeInMillis();
 
-        Log.d("st " + startTime, "et " + endTime);
+            Log.d("st " + startTime, "et " + endTime);
             if (CheckConnection.isConnection(context)) {
 //                    Log.e("valeee",caloriesBeanArrayList.get(2).getDate());
-                Timer timer=new Timer();
+                Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         new PadometerAsync().execute(startTime, endTime);
                     }
-                },5*1000);
-
-               // new PadometerAsync().execute(startTime, endTime);
+                }, 5 * 1000);
+                 //new PadometerAsync().execute(startTime, endTime);
             } else {
 
                 swipeRefreshLayout.setRefreshing(false);
 
                 new Helper().showNoInternetToast(context);
             }
-           // showProgressBar(false);
+            // showProgressBar(false);
 
         }
     }
+
+
+
 }

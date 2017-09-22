@@ -483,8 +483,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             editor.putString("zipCode",userZip);
             Log.e(TAG,"gender is " + userGender + userFname);
                 editor.commit();
-
-
+            SharedPreferences.Editor mygoals = getSharedPreferences("MyGoals", MODE_PRIVATE).edit();
+                JSONObject object=user.getJSONObject("dailygoal");
+                mygoals.putString("steps",object.getString("steps"));
+                mygoals.putString("calories",object.getString("calories"));
+                mygoals.putString("distance",object.getString("distance"));
+                mygoals.putString("floors",String.valueOf(object.getInt("floors")));
+                mygoals.commit();
         }
         catch (JSONException j)
         {

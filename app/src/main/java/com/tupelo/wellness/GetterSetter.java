@@ -1,11 +1,17 @@
 package com.tupelo.wellness;
 
+import java.io.Serializable;
+
 /**
  * Created by Abhishek Singh Arya on 20-09-2015.
  */
-public class GetterSetter {
+public class GetterSetter implements Serializable {
     private static GetterSetter getterSetter;
     private String today_steps ="0", yesterday_steps ="0", best_single ="0", total_steps ="0";
+    private String today_calories ="0", yesterday_calories ="0", best_single_calories ="0", total_calories ="0";
+    private String today_distance ="0", yesterday_distance ="0", best_single_distance ="0", total_distance ="0";
+    private String today_floors ="0", yesterday_floors ="0", best_single_floors ="0", total_floors ="0";
+
     private String rank ="0";
     private String steps ="0";
     private String challenge_start ="";
@@ -206,4 +212,115 @@ public class GetterSetter {
     }
 
 
+    public static GetterSetter getGetterSetter() {
+        return getterSetter;
+    }
+
+    public static void setGetterSetter(GetterSetter getterSetter) {
+        GetterSetter.getterSetter = getterSetter;
+    }
+
+    public String getToday_calories() {
+        return today_calories;
+    }
+
+    public void setToday_calories(String today_calories) {
+        this.today_calories = today_calories;
+    }
+
+    public String getYesterday_calories() {
+        return yesterday_calories;
+    }
+
+    public void setYesterday_calories(String yesterday_calories) {
+        this.yesterday_calories = yesterday_calories;
+    }
+
+    public String getBest_single_calories() {
+        return best_single_calories;
+    }
+
+    public void setBest_single_calories(String best_single_calories) {
+        this.best_single_calories = best_single_calories;
+    }
+
+    public String getTotal_calories() {
+        return total_calories;
+    }
+
+    public void setTotal_calories(String total_calories) {
+        this.total_calories = total_calories;
+    }
+
+    public String getToday_distance() {
+        return today_distance;
+    }
+
+    public void setToday_distance(String today_distance) {
+        this.today_distance = today_distance;
+    }
+
+    public String getYesterday_distance() {
+        return yesterday_distance;
+    }
+
+    public void setYesterday_distance(String yesterday_distance) {
+        this.yesterday_distance = yesterday_distance;
+    }
+
+    public String getBest_single_distance() {
+        return best_single_distance;
+    }
+
+    public void setBest_single_distance(String best_single_distance) {
+        this.best_single_distance = best_single_distance;
+    }
+
+    public String getTotal_distance() {
+        return total_distance;
+    }
+
+    public void setTotal_distance(String total_distance) {
+        this.total_distance = total_distance;
+    }
+
+    public String getToday_floors() {
+        return today_floors;
+    }
+
+    public void setToday_floors(String today_floors) {
+        this.today_floors = today_floors;
+    }
+
+    public String getYesterday_floors() {
+        return yesterday_floors;
+    }
+
+    public void setYesterday_floors(String yesterday_floors) {
+        this.yesterday_floors = yesterday_floors;
+    }
+
+    public String getBest_single_floors() {
+        return best_single_floors;
+    }
+
+    public void setBest_single_floors(String best_single_floors) {
+        this.best_single_floors = best_single_floors;
+    }
+
+    public String getTotal_floors() {
+        return total_floors;
+    }
+
+    public void setTotal_floors(String total_floors) {
+        this.total_floors = total_floors;
+    }
+
+    public String getL_stepsLabel() {
+        return l_stepsLabel;
+    }
+
+    public void setL_stepsLabel(String l_stepsLabel) {
+        this.l_stepsLabel = l_stepsLabel;
+    }
 }

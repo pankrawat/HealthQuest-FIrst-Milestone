@@ -66,6 +66,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.MyWeight">
+
+        </activity>
         <activity
             android:name=".activity.SignInActivity"
             android:label="@string/title_activity_wclogin"

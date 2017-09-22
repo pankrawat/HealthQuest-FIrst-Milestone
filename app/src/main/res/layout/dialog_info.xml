@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:gravity="center">
+
+
+
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorPrimary"
+         >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+        <com.tupelo.wellness.view.NewTextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25.0dip"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text=""
+            android:textSize="@dimen/dp15"
+            android:textColor="@color/white" >
+        </com.tupelo.wellness.view.NewTextView>
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/message"
+            android:layout_gravity="center"
+            android:layout_marginTop="25.0dip"
+            android:background="#1A00"
+
+            android:text="OK"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp17" />
+
+</RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

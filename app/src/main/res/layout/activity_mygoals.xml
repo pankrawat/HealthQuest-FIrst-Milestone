@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+<RelativeLayout
+    android:id="@+id/step_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:id="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#dbdbdb">
+        <TextView
+            android:id="@+id/step_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+            android:textSize="@dimen/dp18"
+            android:padding="@dimen/dp10"
+            android:textStyle="bold"
+            android:textColor="#7d7d7d"
+            android:text="Steps"
+
+            />
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/step_txt"
+            android:background="#7d7d7d"
+            />
+
+
+    </RelativeLayout>
+    <com.xw.repo.BubbleSeekBar
+        android:id="@+id/seek_bar"
+        android:layout_below="@+id/step_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp12"
+        app:bsb_bubble_color="@color/blue"
+        app:bsb_bubble_text_color="@color/colorPrimaryDark"
+        app:bsb_max="70000"
+        app:bsb_progress="30"
+        app:bsb_second_track_color="@color/red"
+        app:bsb_show_progress_in_float="false"
+        app:bsb_show_section_mark="false"
+        app:bsb_show_section_text="false"
+        app:bsb_show_thumb_text="false"
+        app:bsb_track_size="@dimen/dp8"
+        app:bsb_track_color="#dbdbdb"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/seek_bar"
+        android:text="0"
+        android:textSize="@dimen/dp10"
+        android:layout_marginTop="-3dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/dp10"
+        android:textColor="#7d7d7d"
+        android:layout_below="@+id/seek_bar"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/seek_bar"
+        android:text="70000"
+        android:textSize="@dimen/dp10"
+        android:layout_marginTop="-3dp"
+        android:textStyle="bold"
+        android:layout_marginRight="@dimen/dp10"
+        android:textColor="#7d7d7d"
+        android:layout_below="@+id/seek_bar"
+        />
+    <RelativeLayout
+        android:id="@+id/my_goal_square"
+        android:layout_below="@+id/seek_bar"
+        android:layout_width="@dimen/dpw100"
+        android:layout_height="@dimen/dpw25"
+        android:background="@drawable/mygoals_square"
+            android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dpw2"
+        >
+
+        <TextView
+            android:id="@+id/small_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steps"
+            android:textStyle="bold"
+            android:textSize="@dimen/dp10"
+            android:textColor="#7d7d7d"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3dp"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#dbdbdb"
+            android:layout_toLeftOf="@+id/small_step"
+            android:layout_marginRight="4dp"
+            />
+
+        <TextView
+            android:id="@+id/steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/dp13"
+            android:textStyle="bold"
+            android:textColor="#7d7d7d"
+
+            android:text="0"/>
+    </RelativeLayout>
+
+<Space
+    android:layout_below="@+id/my_goal_square"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/margin_20dp" />
+</RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/calories_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    <RelativeLayout
+        android:id="@+id/calories_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#dbdbdb">
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#7d7d7d"
+            />
+        <TextView
+            android:id="@+id/calories_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/dp18"
+            android:padding="@dimen/dp10"
+            android:textStyle="bold"
+            android:textColor="#7d7d7d"
+            android:text="Active Calories"
+
+            />
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/calories_txt"
+            android:background="#7d7d7d"
+            />
+
+
+    </RelativeLayout>
+    <com.xw.repo.BubbleSeekBar
+        android:id="@+id/seek_bar_calories"
+        android:layout_below="@+id/calories_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp12"
+        app:bsb_bubble_text_color="@color/red"
+        app:bsb_max="10000"
+        app:bsb_progress="300"
+        app:bsb_second_track_color="@color/blue"
+        app:bsb_show_progress_in_float="false"
+        app:bsb_show_section_mark="false"
+        app:bsb_show_section_text="false"
+        app:bsb_show_thumb_text="false"
+        app:bsb_track_size="@dimen/dp8"
+        app:bsb_track_color="#dbdbdb"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/seek_bar_calories"
+            android:text="0"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp13"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_calories"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/seek_bar_calories"
+            android:text="10000"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/dp10"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_calories"
+            />
+    <RelativeLayout
+        android:id="@+id/my_goal_square1"
+        android:layout_below="@+id/seek_bar_calories"
+        android:layout_width="@dimen/dpw100"
+        android:layout_height="@dimen/dpw25"
+        android:background="@drawable/mygoals_square"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dpw2"
+
+        >
+
+        <TextView
+            android:id="@+id/small_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Cals"
+            android:textStyle="bold"
+            android:textColor="#7d7d7d"
+
+            android:textSize="@dimen/dp10"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3dp"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#dbdbdb"
+            android:layout_toLeftOf="@+id/small_calories"
+            android:layout_marginRight="4dp"
+            />
+
+        <TextView
+            android:id="@+id/calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/dp13"
+            android:textStyle="bold"
+            android:textColor="#7d7d7d"
+
+            android:text="0"/>
+        </RelativeLayout>
+        <Space
+            android:layout_below="@+id/my_goal_square1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_20dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/distance_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <RelativeLayout
+            android:id="@+id/distance_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#dbdbdb">
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="#7d7d7d"
+                />
+            <TextView
+                android:id="@+id/distance_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/dp18"
+                android:padding="@dimen/dp10"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+                android:text="Distance"
+
+                />
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/distance_txt"
+                android:background="#7d7d7d"
+                />
+
+
+        </RelativeLayout>
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/seek_bar_distance"
+            android:layout_below="@+id/distance_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp12"
+            app:bsb_bubble_text_color="@color/colorPrimaryDark"
+
+            app:bsb_second_track_color="@color/red"
+            app:bsb_show_progress_in_float="false"
+            app:bsb_show_section_mark="false"
+            app:bsb_show_section_text="false"
+            app:bsb_show_thumb_text="false"
+            app:bsb_track_size="@dimen/dp8"
+            app:bsb_track_color="#dbdbdb"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/seek_bar_distance"
+            android:text="0"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp13"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_distance"
+            />
+
+        <TextView
+            android:id="@+id/distance_total_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/seek_bar_distance"
+            android:text="80"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/dp10"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_distance"
+            />
+        <RelativeLayout
+            android:id="@+id/my_goal_square3"
+            android:layout_below="@+id/seek_bar_distance"
+            android:layout_width="@dimen/dpw100"
+            android:layout_height="@dimen/dpw25"
+            android:background="@drawable/mygoals_square"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dpw2"
+
+            >
+
+            <TextView
+                android:id="@+id/small_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meter"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+
+                android:textSize="@dimen/dp10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="3dp"
+                android:layout_centerVertical="true"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#dbdbdb"
+                android:layout_toLeftOf="@+id/small_distance"
+                android:layout_marginRight="4dp"
+                />
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/dp13"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+                android:text="0"/>
+        </RelativeLayout>
+        <Space
+            android:layout_below="@+id/my_goal_square3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_20dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/floor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/floor_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#dbdbdb">
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="#7d7d7d"
+                />
+            <TextView
+                android:id="@+id/floor_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/dp18"
+                android:padding="@dimen/dp12"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+                android:text="Floors"
+
+                />
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/floor_txt"
+                android:background="#7d7d7d"
+                />
+
+
+        </RelativeLayout>
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/seek_bar_floor"
+            android:layout_below="@+id/floor_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp12"
+            app:bsb_bubble_color="@color/blue"
+            app:bsb_bubble_text_color="@color/red"
+            app:bsb_thumb_text_color="@color/red"
+            app:bsb_max="1000"
+            app:bsb_progress="30"
+            app:bsb_second_track_color="@color/red"
+            app:bsb_show_progress_in_float="false"
+            app:bsb_show_section_mark="false"
+            app:bsb_show_section_text="false"
+            app:bsb_show_thumb_text="false"
+            app:bsb_track_size="@dimen/dp8"
+            app:bsb_track_color="#dbdbdb"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/seek_bar_floor"
+            android:text="0"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp13"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_floor"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/seek_bar_floor"
+            android:text="1000"
+            android:textSize="@dimen/dp10"
+            android:layout_marginTop="-3dp"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/dp10"
+            android:textColor="#7d7d7d"
+            android:layout_below="@+id/seek_bar_floor"
+            />
+        <RelativeLayout
+            android:id="@+id/my_goal_square2"
+            android:layout_below="@+id/seek_bar_floor"
+            android:layout_width="@dimen/dpw100"
+            android:layout_height="@dimen/dpw25"
+            android:background="@drawable/mygoals_square"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dpw2"
+            >
+            <TextView
+                android:id="@+id/small_floor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Floors"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+
+                android:textSize="@dimen/dp10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="3dp"
+                android:layout_centerVertical="true"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#dbdbdb"
+                android:layout_toLeftOf="@+id/small_floor"
+                android:layout_marginRight="4dp"
+                />
+
+            <TextView
+                android:id="@+id/floors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/dp13"
+                android:textStyle="bold"
+                android:textColor="#7d7d7d"
+
+                android:text="0"/>
+        </RelativeLayout>
+        <Space
+            android:layout_below="@+id/my_goal_square2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_20dp" />
+
+
+    </RelativeLayout>
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/floor_txt"
+            android:background="#7d7d7d"
+            android:layout_marginLeft="@dimen/dp19"
+            android:layout_marginRight="@dimen/dp19"
+            android:layout_marginTop="@dimen/dp5"
+            />
+        <Button
+            android:id="@+id/save"
+            android:layout_marginLeft="@dimen/dp19"
+            android:layout_marginRight="@dimen/dp19"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/dp5"
+            android:textColor="@android:color/white"
+            android:text="SAVE"/>
+        <Space
+            android:layout_below="@+id/my_goal_square2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_20dp" />
+    </LinearLayout>
+</ScrollView>

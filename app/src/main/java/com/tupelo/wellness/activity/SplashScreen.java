@@ -146,7 +146,7 @@ public class SplashScreen extends Activity {
             Date date2 = format.parse(expiry);
             dateServer = date2.getTime();
 
-            Log.e(TAG, "phone current date is " + dateUser + " expiry date is " + dateServer + " date server exact " + expiry +" date server intermin is "+ date2.toString());
+            Log.e(TAG, "phone current date is " + format.format(dateUser) + " expiry date is " + format.format(dateServer) + " date server exact " + expiry +" date server intermin is "+ date2.toString());
 
         } catch (ParseException e) {
             e.printStackTrace();

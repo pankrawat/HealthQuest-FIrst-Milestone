@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
+import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthDataService;
 import com.samsung.android.sdk.healthdata.HealthDataStore;
 import com.samsung.android.sdk.healthdata.HealthPermissionManager;
@@ -52,6 +53,11 @@ public class SetUpSHealth {
 
     public void initialise() {
         mKeySet = new HashSet<HealthPermissionManager.PermissionKey>();
+        //mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.Exercise.COUNT, HealthPermissionManager.PermissionType.READ));
+
+        mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.Exercise.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.FloorsClimbed.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+
         mKeySet.add(new HealthPermissionManager.PermissionKey(Constants.SHEALTH_STEP_DAILY_TREND, HealthPermissionManager.PermissionType.READ));
         HealthDataService healthDataService = new HealthDataService();
         try {
@@ -64,6 +70,12 @@ public class SetUpSHealth {
         mStore = new HealthDataStore(activity, mConnectionListener);
         // Request the connection to the health data store
         mStore.connectService();
+    }
+
+    public void destroy() {
+        if(mStore!=null) {
+            mStore.disconnectService();
+        }
     }
 
     private final HealthDataStore.ConnectionListener mConnectionListener = new HealthDataStore.ConnectionListener() {
@@ -148,6 +160,7 @@ public class SetUpSHealth {
         alert.setPositiveButton("OK", null);
         alert.show();
     }
+
 
     private void showConnectionFailureDialog(HealthConnectionErrorResult error) {
 

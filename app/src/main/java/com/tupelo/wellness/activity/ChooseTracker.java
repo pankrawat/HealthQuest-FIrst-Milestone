@@ -59,7 +59,6 @@ import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.fitness.result.DailyTotalResult;
 import com.google.android.gms.fitness.result.DataSourcesResult;
-import com.google.android.gms.tagmanager.ContainerHolder;
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
 import com.samsung.android.sdk.healthdata.HealthConstants;
 import com.samsung.android.sdk.healthdata.HealthData;
@@ -140,22 +139,6 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
         mCurrentStartTime = StepCountReader.TODAY_START_UTC_TIME;
-        HealthDataService healthDataService = new HealthDataService();
-
-
-
-        try {
-            healthDataService.initialize(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // Create a HealthDataStore instance and set its listener
-        mStore = new HealthDataStore(this, mConnectionListener);
-
-        // Request the connection to the health data store
-        mStore.connectService();
-        mReporter = new StepCountReader(mStore, mStepCountObserver);
-        mResolver = new HealthDataResolver(mStore, null);
 
         showBackButton = getIntent().getBooleanExtra("showBackButton",false);
 
@@ -303,17 +286,7 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private final StepCountReader.StepCountObserver mStepCountObserver = new StepCountReader.StepCountObserver() {
-        @Override
-        public void onChanged(int count) {
-            updateStepCountView(String.valueOf(count));
-        }
 
-        @Override
-        public void onBinningDataChanged(List<StepCountReader.StepBinningData> stepBinningDataList) {
-            //updateBinningChartView(stepBinningDataList);
-        }
-    };
 
     public void openRespectiveTracker(View view) {
         Intent intent;
@@ -364,8 +337,8 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
                 case "fitbit":
                     intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(Constants.FITBIT_lOGIN_URL));
-                    List<ResolveInfo> browserList = getPackageManager().queryIntentActivities(intent, 0);
-                    intent.setPackage(browserList.get(0).activityInfo.packageName);
+//                    List<ResolveInfo> browserList = getPackageManager().queryIntentActivities(intent, 0);
+//                    intent.setPackage(browserList.get(0).activityInfo.packageName);
                     startActivity(intent);
 
                         //finish();
@@ -391,13 +364,13 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
 //                                c = result.getResultCursor();
 //                                if (c != null) {
 //                                    while (c.moveToNext()) {
-//                                        String data =   String.valueOf(c.getInt(c.getColumnIndex("floor")));
-                                       // Integer data = c.getInt(c.getColumnIndex(HealthConstants.StepCount.CALORIE));
-
-                                        //    if (data != null) {
-                                            // If data is not null, it means there is LIVE_DATA
-                                            // Refer an example in API Reference’ HealthConstants.Exercise interface
-                                            // and decompress live data
+//                                        String data = String.valueOf(c.getInt(c.getColumnIndex("floor")));
+//                                        Integer data = c.getInt(c.getColumnIndex(HealthConstants.StepCount.CALORIE));
+//
+//                                            if (data != null) {
+//                                             If data is not null, it means there is LIVE_DATA
+//                                             Refer an example in API Reference’ HealthConstants.Exercise interface
+//                                             and decompress live data
 //                                        byte[] data = c.getBlob(c.getColumnIndex(HealthConstants.FloorsClimbed.FLOOR));
 //                                        ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 //                                        GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
@@ -415,13 +388,13 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
 //                                            SimpleDateFormat format= new SimpleDateFormat("dd/MM/yy HH:mm:ss z");
 //                                            Log.e("dateeee",format.format(date));
 //                                        }
-
-                                       // Log.e(".APP_TAG", ""+data);
-
-//                                        }
-//                                        else {
-//                                            Log.e(".APP_TAG", "there is no live data.");
-//                                        }
+//                                    }
+//                                       // Log.e(".APP_TAG", ""+data);
+//
+//
+////                                        else {
+////                                            Log.e(".APP_TAG", "there is no live data.");
+////                                        }
 //                                    }
 //                                }
 //                            } catch(Exception e) {
@@ -617,6 +590,12 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
 
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SetUpSHealth.getInstance().destroy();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( requestCode == 1 ) {
             if( resultCode == RESULT_OK ) {
@@ -731,148 +710,18 @@ public class ChooseTracker extends AppCompatActivity implements GoogleApiClient.
     }
 
 
-    private final HealthDataStore.ConnectionListener mConnectionListener = new HealthDataStore.ConnectionListener() {
-        @Override
-        public void onConnected() {
-            Log.d(TAG, "onConnected");
-            if (isPermissionAcquired()) {
-                mReporter.requestDailyStepCount(mCurrentStartTime);
-            } else {
-                requestPermission();
-            }
-        }
-
-        @Override
-        public void onConnectionFailed(HealthConnectionErrorResult error) {
-            Log.d(TAG, "onConnectionFailed");
-            showConnectionFailureDialog(error);
-        }
-
-        @Override
-        public void onDisconnected() {
-            Log.d(TAG, "onDisconnected");
-            if (!isFinishing()) {
-                mStore.connectService();
-            }
-        }
-    };
-
-
-    private boolean isPermissionAcquired() {
-        HealthPermissionManager pmsManager = new HealthPermissionManager(mStore);
-        try {
-            // Check whether the permissions that this application needs are acquired
-            Map<HealthPermissionManager.PermissionKey, Boolean> resultMap = pmsManager.isPermissionAcquired(generatePermissionKeySet());
-            return !resultMap.values().contains(Boolean.FALSE);
-        } catch (Exception e) {
-            Log.e(TAG, "Permission request fails.", e);
-        }
-        return false;
-    }
-
-    private void requestPermission() {
-        HealthPermissionManager pmsManager = new HealthPermissionManager(mStore);
-        try {
-            // Show user permission UI for allowing user to change options
-            pmsManager.requestPermissions(generatePermissionKeySet(), ChooseTracker.this)
-                    .setResultListener(mPermissionListener);
-        } catch (Exception e) {
-            Log.e(TAG, "Permission setting fails.", e);
-        }
-    }
-
-    private final HealthResultHolder.ResultListener<HealthPermissionManager.PermissionResult> mPermissionListener =
-            new HealthResultHolder.ResultListener<HealthPermissionManager.PermissionResult>() {
-
-                @Override
-                public void onResult(HealthPermissionManager.PermissionResult result) {
-                    Map<HealthPermissionManager.PermissionKey, Boolean> resultMap = result.getResultMap();
-                    // Show a permission alarm and clear step count if permissions are not acquired
-                    if (resultMap.values().contains(Boolean.FALSE)) {
-                        updateStepCountView("");
-                        showPermissionAlarmDialog();
-                    } else {
-                        // Get the daily step count of a particular day and display it
-                        mReporter.requestDailyStepCount(mCurrentStartTime);
-                    }
-                }
-            };
-
-    private Set<HealthPermissionManager.PermissionKey> generatePermissionKeySet() {
-        Set<HealthPermissionManager.PermissionKey> pmsKeySet = new HashSet<>();
-        pmsKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.Exercise.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
-        pmsKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.FloorsClimbed.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
-
-        pmsKeySet.add(new HealthPermissionManager.PermissionKey(HealthConstants.StepCount.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
-        pmsKeySet.add(new HealthPermissionManager.PermissionKey(StepCountReader.STEP_SUMMARY_DATA_TYPE_NAME, HealthPermissionManager.PermissionType.READ));
-        return pmsKeySet;
-    }
-
-    private void updateStepCountView(final String count) {
-        // Display the today step count so far
-        Log.e("...............chooseTraker",count);
-    }
-
-    private void showPermissionAlarmDialog() {
-        if (isFinishing()) {
-            return;
-        }
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(ChooseTracker.this);
-        alert.setTitle("Notice")
-                .setMessage("All permission should be acquired")
-                .setPositiveButton("OK", null)
-                .show();
-    }
 
 
 
-    private void showConnectionFailureDialog(final HealthConnectionErrorResult error) {
-        if (isFinishing()) {
-            return;
-        }
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        if (error.hasResolution()) {
-            switch (error.getErrorCode()) {
-                case HealthConnectionErrorResult.PLATFORM_NOT_INSTALLED:
-                    alert.setMessage(R.string.msg_req_install);
-                    break;
-                case HealthConnectionErrorResult.OLD_VERSION_PLATFORM:
-                    alert.setMessage(R.string.msg_req_upgrade);
-                    break;
-                case HealthConnectionErrorResult.PLATFORM_DISABLED:
-                    alert.setMessage(R.string.msg_req_enable);
-                    break;
-                case HealthConnectionErrorResult.USER_AGREEMENT_NEEDED:
-                    alert.setMessage(R.string.msg_req_agree);
-                    break;
-                default:
-                    alert.setMessage(R.string.msg_req_available);
-                    break;
-            }
-        } else {
-            alert.setMessage(R.string.msg_conn_not_available);
-        }
 
 
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (error.hasResolution()) {
-                    error.resolve(ChooseTracker.this);
-                }
 
-            }
-        });
 
-        if (error.hasResolution()) {
-            alert.setNegativeButton(R.string.cancel, null);
-        }
 
-        alert.show();
-    }
+
+
+
+
 
             //fitbit data
 

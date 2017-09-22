@@ -46,6 +46,7 @@ import com.tupelo.wellness.AppController;
 import com.tupelo.wellness.OnBoard.OnboarderActivity;
 import com.tupelo.wellness.R;
 import com.tupelo.wellness.activity.CompanyCodeActivity;
+import com.tupelo.wellness.activity.Dashboard;
 import com.tupelo.wellness.activity.SplashScreen;
 import com.tupelo.wellness.activity.TabActivity;
 import com.tupelo.wellness.activity.WebViewActivity;
@@ -261,7 +262,6 @@ public class Helper {
 
 
                     String method = "user.logout_user";
-                    ;
                     params = new Helper().addRequiredParams(params, method);
                     params.put("method", method);
                     params.put("userid", userId);
@@ -849,6 +849,11 @@ public class Helper {
     }
 
     public static void logoutVolley(SplashScreen splashScreen, ProgressDialog pDialog) {
+        logoutVolley(splashScreen, pDialog, null);
+    }
+
+
+    public static void logoutVolley(TabActivity splashScreen, ProgressDialog pDialog) {
         logoutVolley(splashScreen, pDialog, null);
     }
 

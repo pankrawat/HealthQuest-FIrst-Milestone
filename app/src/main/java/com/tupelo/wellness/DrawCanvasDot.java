@@ -37,10 +37,10 @@ public class DrawCanvasDot extends View {
 			canvas.save();
 			for (int i = 0; i < childCount; i++) {
 				if (i == visibleChild) {
-					paint.setColor(Color.WHITE);
+					paint.setColor(Color.parseColor("#9c9c9c"));
 					canvas.drawCircle(cx, cy, radius, paint);
 				} else {
-					paint.setColor(Color.parseColor("#32ffffff"));
+					paint.setColor(Color.parseColor("#cccccc"));
 					canvas.drawCircle(cx, cy, radius, paint);
 				}
 				cx += 2 * (radius + margin);

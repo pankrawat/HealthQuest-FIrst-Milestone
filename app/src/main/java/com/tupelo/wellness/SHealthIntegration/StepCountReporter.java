@@ -44,6 +44,8 @@ import com.tupelo.wellness.network.NetworkCall;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -59,6 +61,8 @@ public class StepCountReporter {
     ArrayList<FloorBean> floorBeanArrayList;
     Boolean isfloorcount=true;
     ArrayList<StepsBean> finalarr= new ArrayList<>();
+    ArrayList<CaloriesBean> finalarrCalories= new ArrayList<>();
+    ArrayList<DistanceBean> finalarrDistance= new ArrayList<>();
 
     public StepCountReporter(HealthDataStore store) {
         mStore = store;
@@ -97,6 +101,8 @@ public class StepCountReporter {
         } catch (Exception e) {
             Log.e(Constants.SHEALTH_TAG, e.getClass().getName() + " - " + e.getMessage());
             Log.e(Constants.SHEALTH_TAG, "Getting step count fails.");
+
+
         }
     }
 
@@ -127,9 +133,11 @@ public class StepCountReporter {
                         caloriesBean=new CaloriesBean();
                         stepCount.setSteps(String.valueOf(c.getInt(c.getColumnIndex("count"))));
                         distanceBean.setDistance(String.valueOf(c.getInt(c.getColumnIndex("distance"))));
-                        caloriesBean.setSteps(String.valueOf(c.getInt(c.getColumnIndex("calorie"))));
-                        Log.e("distance.......",""+c.getInt(c.getColumnIndex("distance")));
+                        caloriesBean.setSteps(String.valueOf(c.getInt(c.getColumnIndex("calorie"))*1000));
+                        Log.e("calories.......",""+String.valueOf(c.getInt(c.getColumnIndex("calorie"))));
                         stepCount.setDate(dateFormat.format(c.getLong(c.getColumnIndex("day_time"))));
+                        distanceBean.setDate(dateFormat.format(c.getLong(c.getColumnIndex("day_time"))));
+                        caloriesBean.setDate(dateFormat.format(c.getLong(c.getColumnIndex("day_time"))));
                         stepCounts.add(stepCount);
                         distanceBeanArrayList.add(distanceBean);
                         caloriesBeanArrayList.add(caloriesBean);
@@ -154,7 +162,10 @@ public class StepCountReporter {
 
 
                 Calendar cal1 = Calendar.getInstance();
-                Hashtable<String,StepsBean> stepbeans= new Hashtable<>();
+                final Hashtable<String,StepsBean> stepbeans= new Hashtable<>();
+                Hashtable<String,CaloriesBean> caloriesbeans= new Hashtable<>();
+                Hashtable<String,DistanceBean> distancebeans= new Hashtable<>();
+
                 ArrayList<String> datearr= new ArrayList<>();
 
                 while (cal1.get(Calendar.DAY_OF_YEAR) >= FirstDayOfWeek.get(Calendar.DAY_OF_YEAR)) {
@@ -180,10 +191,63 @@ public class StepCountReporter {
                         }
 
                     }
+                    for(int j=0;j<caloriesBeanArrayList.size();j++) {
+                        if (caloriesBeanArrayList.get(j).getDate().equalsIgnoreCase(datearr.get(i).toString())) {
+                            //if(stepbeans.get(stepCountFinal.get(j).getDate()).getSteps().equals("null")) {
+
+                            caloriesbeans.put(caloriesBeanArrayList.get(j).getDate(), caloriesBeanArrayList.get(j));
+
+                            //   }
+                        } else {
+                            CaloriesBean bean = new CaloriesBean();
+                            bean.setDate(datearr.get(i).toString());
+                            bean.setSteps("0");
+                            if(!caloriesbeans.containsKey(bean.getDate())) {
+                                caloriesbeans.put(bean.getDate(), bean);
+                            }
+                        }
+
+                    }
+                    for(int j=0;j<distanceBeanArrayList.size();j++) {
+                        if (distanceBeanArrayList.get(j).getDate().equalsIgnoreCase(datearr.get(i).toString())) {
+                            //if(stepbeans.get(stepCountFinal.get(j).getDate()).getSteps().equals("null")) {
+                            distancebeans.put(distanceBeanArrayList.get(j).getDate(), distanceBeanArrayList.get(j));
+
+                            //   }
+                        } else {
+                            DistanceBean bean = new DistanceBean();
+                            bean.setDate(datearr.get(i).toString());
+                            bean.setDistance("0");
+                            if(!distancebeans.containsKey(bean.getDate())) {
+                                distancebeans.put(bean.getDate(), bean);
+                            }
+                        }
+
+                    }
                 }
 
                 finalarr.addAll(stepbeans.values());
+                finalarrCalories.addAll(caloriesbeans.values());
+                finalarrDistance.addAll(distancebeans.values());
+                Collections.sort(finalarr, new Comparator<StepsBean>() {
+                    @Override
+                    public int compare(StepsBean stepsBean, StepsBean t1) {
+                        return t1.getDate().compareTo(stepsBean.getDate());
+                    }
+                });
+                Collections.sort(finalarrCalories, new Comparator<CaloriesBean>() {
+                    @Override
+                    public int compare(CaloriesBean caloriesBean, CaloriesBean t1) {
+                        return t1.getDate().compareTo(caloriesBean.getDate());
+                    }
+                });
 
+                Collections.sort(finalarrDistance, new Comparator<DistanceBean>() {
+                    @Override
+                    public int compare(DistanceBean distanceBean, DistanceBean t1) {
+                        return t1.getDate().compareTo(distanceBean.getDate());
+                    }
+                });
                 for (int i=0;i<finalarr.size();i++){
                     Log.e("Arrrayyyyy",finalarr.get(i).getDate()+"   "+finalarr.get(i).getSteps());
                 }
@@ -216,10 +280,10 @@ public class StepCountReporter {
             String imei = new Helper().getImei(context);
             String serial = "534845414c5448", apitoken = "", apitype = "1006";
                 if(isfloorcount) {
-                   String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, stepCountFinal, caloriesBeanArrayList, distanceBeanArrayList,floorBeanArrayList);
+                   String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, finalarr, finalarrCalories, finalarrDistance,floorBeanArrayList);
                     Log.e(StepCountReporter.class.getName(),"1"+result);
                 }else {
-                    String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, stepCountFinal, caloriesBeanArrayList, distanceBeanArrayList);
+                    String result= new NetworkCall().setStepsToMymo(sessionId, userId, imei, serial, apitoken, apitype, finalarr, finalarrCalories, finalarrDistance);
                 Log.e(StepCountReporter.class.getName(),"2"+result);
                 }
                     return null;
@@ -312,8 +376,8 @@ public class StepCountReporter {
         long endTime = System.currentTimeMillis();
         floorBeanArrayList=new ArrayList<>();
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
-        Log.d("TEST", "start "+startTime);
-        Log.d("TEST", "end "+endTime);
+        Log.e("TEST", "start "+startTime);
+        Log.e("TEST", "end "+endTime);
         HealthDataResolver.Filter filter =
                 HealthDataResolver.Filter.greaterThanEquals(HealthConstants.FloorsClimbed.START_TIME, startTime)
                         .lessThan(HealthConstants.FloorsClimbed.END_TIME, endTime);
@@ -332,6 +396,33 @@ public class StepCountReporter {
             resolver.aggregate(request).setResultListener(mStepAggrResult);
         } catch (Exception e) {
             Log.d("TEST", "Aggregating health data fails.");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Calendar calendar = Calendar.getInstance();
+            Calendar FirstDayOfWeek = Calendar.getInstance();
+            FirstDayOfWeek.add(Calendar.DAY_OF_YEAR, -6);
+            while (calendar.get(Calendar.DAY_OF_YEAR) >= FirstDayOfWeek.get(Calendar.DAY_OF_YEAR)) {
+                Log.e("date",dateFormat.format(calendar.getTime()));
+                Log.e("week date",dateFormat.format(FirstDayOfWeek.getTime()));
+                StepsBean stepsBean= new StepsBean();
+                stepsBean.setDate(dateFormat.format(calendar.getTime()));
+                stepsBean.setSteps("0");
+                finalarr.add(stepsBean);
+                CaloriesBean caloriesBean= new CaloriesBean();
+                caloriesBean.setDate(dateFormat.format(calendar.getTime()));
+                caloriesBean.setSteps("0");
+                finalarrCalories.add(caloriesBean);
+                DistanceBean distanceBean= new DistanceBean();
+                distanceBean.setDate(dateFormat.format(calendar.getTime()));
+                distanceBean.setDistance("0");
+                finalarrDistance.add(distanceBean);
+                FloorBean floorBean= new FloorBean();
+                floorBean.setDate(dateFormat.format(calendar.getTime()));
+                floorBean.setFloor("0");
+                floorBeanArrayList.add(floorBean);
+                calendar.set(Calendar.HOUR_OF_DAY,-1);
+            }
+            new SHealthAsync().execute();
+
         }
     }
 

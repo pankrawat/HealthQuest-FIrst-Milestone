@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,15 +32,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonArray;
 import com.pubnub.api.Pubnub;
 import com.tupelo.wellness.AppController;
 import com.tupelo.wellness.R;
 import com.tupelo.wellness.helper.Constants;
 import com.tupelo.wellness.helper.Helper;
+import com.tupelo.wellness.helper.SharedPreference;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -174,16 +179,31 @@ public class CompanyCodeActivity extends AppCompatActivity implements View.OnCli
 
 
     private void downloadCompanyTheme() {
-
         String url = Constants.BASE_URL;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         pDialog.hide();
-                        Log.d("Result", response);
-
+                        Log.d("Result.....", response);
                         try {
+                            JSONObject companypref=new JSONObject(response).optJSONObject("#data").getJSONObject("companyPrefs");
+                            SharedPreferences.Editor editor= getSharedPreferences("companyprefs",0).edit();
+                            editor.putString("distance",companypref.getString("distance"));
+
+                            JSONArray actdataShow=new JSONObject(response).optJSONObject("#data").getJSONArray("actdataShow");
+                            ArraySet<String> arr=new ArraySet<>();
+
+                            for(int i=0;i<actdataShow.length();i++){
+                                JSONObject actdata= actdataShow.getJSONObject(i);
+                                if(actdata.getInt("value")==1){
+                                    arr.add(actdata.getString("device"));
+                                }
+                            }
+                            editor.putStringSet("deviceset",arr);
+                            Log.e("arrrrrr",arr.toString());
+                            editor.commit();
+
                             String corpid = new JSONObject(response).optJSONObject("#data").optString("corpid");
                             Log.e(TAG, corpid);
                             if (corpid != null & !corpid.isEmpty()) {

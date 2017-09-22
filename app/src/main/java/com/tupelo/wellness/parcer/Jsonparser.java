@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.DoubleBuffer;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,17 +103,39 @@ public class Jsonparser {
         try {
             getterSetter = GetterSetter.getInstance();
             JSONObject jsonObject1 = jsonObject.getJSONObject("#data");
-            if (!jsonObject1.isNull("today")) {
-                getterSetter.setToday_steps(jsonObject1.getString("today"));
+            JSONObject jsonObject2= jsonObject1.getJSONObject("dashboardinfo");
+            if (!jsonObject2.isNull("today")) {
+                JSONObject jsonObject3 =jsonObject2.getJSONObject("today");
+                getterSetter.setToday_steps(jsonObject3.getString("steps"));
+                Log.e("Today calories.....",String.valueOf(jsonObject3.getDouble("calories")));
+                getterSetter.setToday_calories(String.valueOf(jsonObject3.getDouble("calories")));
+                getterSetter.setToday_distance(String.valueOf(jsonObject3.getDouble("distance")));
+                getterSetter.setToday_floors(jsonObject3.getString("floors"));
+
             }
-            if (!jsonObject1.isNull("yesterday")) {
-                getterSetter.setYesterday_steps(jsonObject1.getString("yesterday"));
+            if (!jsonObject2.isNull("yesterday")) {
+                JSONObject jsonObject3 =jsonObject2.getJSONObject("yesterday");
+                getterSetter.setYesterday_steps(jsonObject3.getString("steps"));
+                getterSetter.setYesterday_calories(String.valueOf(jsonObject3.getDouble("calories")));
+                getterSetter.setYesterday_distance(String.valueOf(jsonObject3.getDouble("distance")));
+                getterSetter.setYesterday_floors(jsonObject3.getString("floors"));
+
             }
-            if (!jsonObject1.isNull("bestsingle")) {
-                getterSetter.setBest_single(jsonObject1.getString("bestsingle"));
+            if (!jsonObject2.isNull("bestsingle")) {
+                JSONObject jsonObject3 =jsonObject2.getJSONObject("bestsingle");
+                getterSetter.setBest_single(jsonObject3.getString("steps"));
+                getterSetter.setBest_single_calories(String.valueOf(jsonObject3.getDouble("calories")));
+                getterSetter.setBest_single_distance(String.valueOf(jsonObject3.getDouble("distance")));
+                getterSetter.setBest_single_floors(jsonObject3.getString("floors"));
+
             }
-            if (!jsonObject1.isNull("totalsteps")) {
-                getterSetter.setTotal_steps(jsonObject1.getString("totalsteps"));
+            if (!jsonObject2.isNull("total")) {
+                JSONObject jsonObject3 =jsonObject2.getJSONObject("total");
+                getterSetter.setTotal_steps(jsonObject3.getString("steps"));
+                getterSetter.setTotal_calories(String.valueOf(jsonObject3.getDouble("calories")));
+                getterSetter.setTotal_distance(String.valueOf(jsonObject3.getDouble("distance")));
+                getterSetter.setTotal_floors(jsonObject3.getString("floors"));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -252,7 +276,9 @@ public class Jsonparser {
     public ArrayList<InfoStreamBean> getInfoStream() {
         ArrayList<InfoStreamBean> arrayList = new ArrayList<InfoStreamBean>();
         try {
-            JSONObject jsonObject1 = jsonObject.getJSONObject("#data");
+            JSONObject jsonObjec = jsonObject.getJSONObject("#data");
+            JSONObject jsonObject1 = jsonObjec.getJSONObject("challengestream");
+
             int msgcount = jsonObject1.getInt("messagecount");
             if (msgcount > 0) {
                 JSONArray jsonArray = jsonObject1.getJSONArray("challengemessages");
@@ -296,6 +322,55 @@ public class Jsonparser {
         return arrayList;
     }
 
+
+
+//    public ArrayList<InfoStreamBean> getInfoStream() {
+//        ArrayList<InfoStreamBean> arrayList = new ArrayList<InfoStreamBean>();
+//        try {
+//            JSONObject jsonObject1 = jsonObject.getJSONObject("#data");
+//            int msgcount = jsonObject1.getInt("messagecount");
+//            if (msgcount > 0) {
+//                JSONArray jsonArray = jsonObject1.getJSONArray("challengemessages");
+//                for (int i = 0; i < msgcount; i++) {
+//                    InfoStreamBean infoStreamBean = new InfoStreamBean();
+//                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+//                    if (!jsonObject2.isNull("title")) {
+//                        infoStreamBean.setTitle(jsonObject2.getString("title"));
+//                    }
+//                    if (!jsonObject2.isNull("message")) {
+//                        infoStreamBean.setMessage(jsonObject2.getString("message"));
+//                    }
+//                    if (!jsonObject2.isNull("photourl")) {
+//                        infoStreamBean.setPhotourl(jsonObject2.getString("photourl"));
+//                    }
+//                    arrayList.add(infoStreamBean);
+//                }
+//            }
+//            int infomsgcount = jsonObject1.getInt("infomsgcount");
+//            if (infomsgcount > 0) {
+//                JSONArray jsonArray = jsonObject1.getJSONArray("infomessages");
+//                for (int i = 0; i < infomsgcount; i++) {
+//                    InfoStreamBean infoStreamBean = new InfoStreamBean();
+//                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+//                    if (!jsonObject2.isNull("title")) {
+//                        infoStreamBean.setTitle(jsonObject2.getString("title"));
+//                    }
+//                    if (!jsonObject2.isNull("message")) {
+//                        infoStreamBean.setMessage(jsonObject2.getString("message"));
+//                    }
+//                    if (!jsonObject2.isNull("photourl")) {
+//                        infoStreamBean.setPhotourl(jsonObject2.getString("photourl"));
+//                    }
+//                    arrayList.add(infoStreamBean);
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return arrayList;
+//    }
+
     public ArrayList<StepsBean> getFitbitArray() {
         ArrayList<StepsBean> stepsArray = new ArrayList<StepsBean>();
         try {
@@ -309,6 +384,7 @@ public class Jsonparser {
                 if (!jsonObject2.isNull("value")) {
                     stepsBean.setSteps(jsonObject2.getString("value"));
                 }
+                Log.e("fitbit steps date",stepsBean.getDate());
                 stepsArray.add(stepsBean);
             }
             return stepsArray;
@@ -352,7 +428,7 @@ public class Jsonparser {
                     stepsBean.setDate(jsonObject2.getString("dateTime"));
                 }
                 if (!jsonObject2.isNull("value")) {
-                    stepsBean.setDistance(jsonObject2.getString("value"));
+                    stepsBean.setDistance(new DecimalFormat("#").format(Double.valueOf(jsonObject2.getString("value"))*1000));
                 }
                 stepsArray.add(stepsBean);
             }
@@ -456,6 +532,87 @@ public class Jsonparser {
         }
         return null;
     }
+
+    public ArrayList<CaloriesBean> getJawboneCaloriesArray() {
+        ArrayList<CaloriesBean> stepsArray = new ArrayList<>();
+        try {
+            if (!jsonObject.isNull("data")) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                if (!data.isNull("items")) {
+                    JSONArray items = data.getJSONArray("items");
+                    int size = 7 < items.length() ? 7 : items.length();
+                    for (int i = 0; i < size; i++) {
+                        CaloriesBean stepsBean = new CaloriesBean();
+                        if (!items.isNull(i)) {
+                            JSONObject jsonObject1 = items.getJSONObject(i);
+                            if (!jsonObject1.isNull("date")) {
+//                                Log.d("jawbone date", jsonObject1.toString());
+                                //Log.d("jawbone date", jsonObject1.getLong("date"));
+                                SimpleDateFormat sdfParse = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                Date date = sdfParse.parse(String.valueOf(jsonObject1.getLong("date")));
+                                stepsBean.setDate(sdf.format(date.getTime()));
+                            }
+                            if (!jsonObject1.isNull("details")) {
+                                JSONObject details = jsonObject1.getJSONObject("details");
+                                if (!details.isNull("steps")) {
+                                    stepsBean.setSteps(String.valueOf(details.getLong("wo_calories")));
+                                }
+                            }
+                        }
+                        stepsArray.add(stepsBean);
+                    }
+                }
+            }
+            return stepsArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<DistanceBean> getJawboneDistanceArray() {
+        ArrayList<DistanceBean> distanceArray = new ArrayList<>();
+        try {
+            if (!jsonObject.isNull("data")) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                if (!data.isNull("items")) {
+                    JSONArray items = data.getJSONArray("items");
+                    int size = 7 < items.length() ? 7 : items.length();
+                    for (int i = 0; i < size; i++) {
+                        DistanceBean stepsBean = new DistanceBean();
+                        if (!items.isNull(i)) {
+                            JSONObject jsonObject1 = items.getJSONObject(i);
+                            if (!jsonObject1.isNull("date")) {
+//                                Log.d("jawbone date", jsonObject1.toString());
+                                //Log.d("jawbone date", jsonObject1.getLong("date"));
+                                SimpleDateFormat sdfParse = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                Date date = sdfParse.parse(String.valueOf(jsonObject1.getLong("date")));
+                                stepsBean.setDate(sdf.format(date.getTime()));
+                            }
+                            if (!jsonObject1.isNull("details")) {
+                                JSONObject details = jsonObject1.getJSONObject("details");
+                                if (!details.isNull("steps")) {
+                                    stepsBean.setDistance(String.valueOf(details.getLong("distance")));
+                                }
+                            }
+                        }
+                        distanceArray.add(stepsBean);
+                    }
+                }
+            }
+            return distanceArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public String parseErrorMsg() {
         String s = null;

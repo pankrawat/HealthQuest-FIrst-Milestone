@@ -3,6 +3,7 @@ package com.tupelo.wellness.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -46,9 +47,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +72,7 @@ import com.tupelo.wellness.Fonts;
 import com.tupelo.wellness.GetAuthToken;
 import com.tupelo.wellness.GetterSetter;
 import com.tupelo.wellness.R;
+import com.tupelo.wellness.SHealthIntegration.SetUpSHealth;
 import com.tupelo.wellness.bean.InfoStreamBean;
 import com.tupelo.wellness.callbacks.NotificationListener;
 import com.tupelo.wellness.callbacks.WinnerDialogListener;
@@ -78,6 +82,7 @@ import com.tupelo.wellness.helper.AppTheme;
 import com.tupelo.wellness.helper.Constants;
 import com.tupelo.wellness.helper.Helper;
 import com.tupelo.wellness.helper.NotificationDialog;
+import com.tupelo.wellness.helper.SharedPref;
 import com.tupelo.wellness.helper.SharedPreference;
 import com.tupelo.wellness.helper.WalkingPrefrence;
 import com.tupelo.wellness.helper.WinnerDialog;
@@ -178,7 +183,6 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab);
-
         registerReceiver(mNotificationReceiver, new IntentFilter("broadcast"));
         context = TabActivity.this;
         pDialog = new ProgressDialog(this);
@@ -187,10 +191,43 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
         notificationDialog = new NotificationDialog(this);
         winnerDialog = new WinnerDialog(this);
         spMain = spMain.getInstance(this);
-
+       SharedPreferences editor=getSharedPreferences("companyprefs",0);
+        if(!editor.contains("distance")){
+            Helper.logoutVolley(TabActivity.this, pDialog);
+        }
         info = (ImageView) findViewById(R.id.info);
-        info.setVisibility(View.GONE);
+       //  info.setVisibility(View.GONE);
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog= new Dialog(TabActivity.this,R.style.NewDialog);
+                    dialog.setContentView(R.layout.dialog_info);
+                    dialog.setCancelable(false);
+                    RelativeLayout back=(RelativeLayout)dialog.findViewById(R.id.linearLayout1);
+                    back.setBackgroundColor(Color.parseColor(AppTheme.getInstance().colorPrimaryDark));
+                    TextView msg=(TextView)dialog.findViewById(R.id.message);
+                    Button ok=(Button)dialog.findViewById(R.id.cancel);
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    if(Dashboard.slide==0) {
+                        msg.setText("Step count is the number of steps you take throughout the day.HealthQuest app fetch this number from the activity tracker you use.");
+                    }else if(Dashboard.slide==1)
+                    {
+                        msg.setText("This is the estimated number of calories burned by the user when engage in non-sedenatary activity.This calorie count does not include the passive calorie (BMR) count. HealthQuest app fetches this number from the activity tracker you use.");
 
+                    }else if(Dashboard.slide==2){
+                        msg.setText("The estimated total distance covered that the user achieved throughout the day whether through walking or running or any other physical activity. HealthQuest app fetches this number from the activity tracker you use.");
+                    }else if(Dashboard.slide==3){
+                        msg.setText("A flight of stairs that the user climbed up or down throughout the day. HealthQuest app fetches this number from the activity tracker you use.");
+
+                    }
+                                                dialog.show();
+                }
+            });
 
         /*  view.putExtra("userid","1");
                     view.putExtra("payload_text",payload_text);
@@ -224,9 +261,9 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
         SharedPreferences prefs = getSharedPreferences("MyProfile", Context.MODE_PRIVATE);
         String selectedDevice = prefs.getString("selectedDevice", "");
 
-        SharedPreferences.Editor editor = getSharedPreferences("MyProfile", MODE_PRIVATE).edit();
-        editor.putString("selectedDeviceGlobal", selectedDevice);
-        editor.commit();
+        SharedPreferences.Editor sp = getSharedPreferences("MyProfile", MODE_PRIVATE).edit();
+        sp.putString("selectedDeviceGlobal", selectedDevice);
+        sp.commit();
 
 
         SharedPreferences pref = getSharedPreferences("MyCorpProfile", Context.MODE_PRIVATE);
@@ -487,6 +524,12 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
         super.onDestroy();
         pDialog.dismiss();
         unregisterReceiver(mNotificationReceiver);
+        SetUpSHealth.getInstance().destroy();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 
     void showToast(String msg) {
@@ -708,6 +751,19 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
                 Log.e(TAG, "Inside Home");
                 break;
             }
+            case "mygoals": {
+                checkmenu();
+                info.setVisibility(View.GONE);
+                Log.e(TAG, "Inside Profile");
+                drawerFragmentLayout.removeAllViews();
+                fourTabLayout.setVisibility(View.GONE);
+                drawerFragmentLayout.setVisibility(View.VISIBLE);
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.changeFragment, new MyGoals());
+                ft.commit();
+                break;
+            }
 
         }
 
@@ -727,15 +783,17 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
     }
 
     public void changeViwes(View view) {
-
-        view.setBackgroundColor(Color.parseColor(AppTheme.getInstance(context).colorPrimary));
-        TextView heading = (TextView) ((LinearLayout) view).getChildAt(1);
-        heading.setTextColor(Color.WHITE);
-        ImageView image = (ImageView) ((LinearLayout) view).getChildAt(0);
-        Drawable myDrawable = image.getDrawable();
-        myDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        image.setImageDrawable(myDrawable);
-
+        try {
+            view.setBackgroundColor(Color.parseColor(AppTheme.getInstance(context).colorPrimary));
+            TextView heading = (TextView) ((LinearLayout) view).getChildAt(1);
+            heading.setTextColor(Color.WHITE);
+            ImageView image = (ImageView) ((LinearLayout) view).getChildAt(0);
+            Drawable myDrawable = image.getDrawable();
+            myDrawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+            image.setImageDrawable(myDrawable);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void onBackPressed() {
@@ -760,6 +818,7 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -769,6 +828,21 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
     }
 
     @Override
@@ -911,6 +985,7 @@ public class TabActivity extends AppCompatActivity implements LBFragment.OnFragm
     protected void onPause() {
         AppController.isActive = false;
         super.onPause();
+        onStart();
     }
 
 

@@ -121,6 +121,29 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_tab_mygoals"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dph60"
+        android:gravity="center"
+        android:tag="mygoals"
+        android:onClick="changeColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/mygoal" />
+
+        <com.tupelo.wellness.view.NewTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wc_default"
+            android:layout_marginTop="@dimen/dph5"
+            android:text="My Goal" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dph60"
         android:gravity="center"
